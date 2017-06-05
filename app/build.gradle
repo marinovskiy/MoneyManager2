@@ -46,18 +46,16 @@ ext {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-//    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-//        transitive = true;
-//    }
-
-    
-
-
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+    //        transitive = true;
+    //    }
     compile "com.android.support:support-v4:$supportLibraryVersion"
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
-    compile "com.android.support:support-v4:$supportLibraryVersion"
+    compile "com.android.support:support-compat:$supportLibraryVersion"
     compile "com.android.support:design:$supportLibraryVersion"
+    compile 'com.android.support:support-v4:25.3.1'
+    compile "com.android.support:cardview-v7:$supportLibraryVersion"
 
     compile "com.google.firebase:firebase-storage:$playServicesVersion"
 
@@ -75,11 +73,12 @@ dependencies {
 
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
     compile 'com.annimon:stream:1.1.7'
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
-    compile 'com.android.support:support-v4:25.3.1'
 
     debugCompile 'com.readystatesoftware.chuck:library:1.0.4'
     releaseCompile 'com.readystatesoftware.chuck:library-no-op:1.0.4'

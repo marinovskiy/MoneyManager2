@@ -6,6 +6,9 @@
         про прибутки та витрати, отримувати інфорацію про поточний баланс, створювати бюджети для
         родини, компанії чи організації, формувати звіти по датам, категоріями тощо</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--navigation drawer-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>
