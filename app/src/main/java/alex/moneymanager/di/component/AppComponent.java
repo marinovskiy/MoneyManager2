@@ -15,6 +15,9 @@ import alex.moneymanager.di.module.NetModule;
 import alex.moneymanager.di.module.PreferenceModel;
 import alex.moneymanager.di.module.PresenterModule;
 import alex.moneymanager.di.module.SystemUtilsModule;
+import alex.moneymanager.fragments.ForgotPasswordFragment;
+import alex.moneymanager.fragments.LoginFragment;
+import alex.moneymanager.fragments.RegistrationFragment;
 import dagger.Component;
 
 @Component(modules = {
@@ -45,5 +48,9 @@ public interface AppComponent {
     void inject(MainActivity activity);
 
     // fragments
+    void inject(LoginFragment fragment);
 
+    void inject(ForgotPasswordFragment fragment);
+
+    void inject(RegistrationFragment fragment);
 }

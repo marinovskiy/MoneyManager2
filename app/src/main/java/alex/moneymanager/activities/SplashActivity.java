@@ -19,7 +19,7 @@ public class SplashActivity extends BaseActivity {
         ((MoneyManagerApplication) getApplication()).component().inject(this);
 
         if (preferenceUtil.getUser() == null) {
-            startActivity(new Intent(this, WelcomeActivity.class));
+            startActivity(new Intent(this, AuthActivity.class));
         } else {
             startActivity(new Intent(this, LoginActivity.class));
         }

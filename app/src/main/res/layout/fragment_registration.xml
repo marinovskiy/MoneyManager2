@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgMain"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            fontPath="fonts/Roboto-Bold.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_medium"
+            android:gravity="center"
+            android:text="Реєєстрація"
+            android:textColor="#000"
+            android:textSize="20sp" />
+
+        <!--<TextView-->
+        <!--fontPath="fonts/Roboto-Medium.ttf"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="@dimen/margin_padding_medium"-->
+        <!--android:layout_marginStart="@dimen/margin_padding_medium"-->
+        <!--android:layout_marginTop="@dimen/margin_padding_small"-->
+        <!--android:gravity="center"-->
+        <!--android:lineSpacingExtra="4dp"-->
+        <!--android:text="Авторизація за допомогою\nелектронної пошти та паролю"-->
+        <!--android:textColor="#000"-->
+        <!--android:textSize="16sp" />-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_padding_medium"
+        android:paddingEnd="@dimen/margin_padding_medium"
+        android:paddingStart="@dimen/margin_padding_medium">
+
+        <EditText
+            android:id="@+id/et_email"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Електронна пошта"
+            android:inputType="textEmailAddress"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/et_first_name"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_medium"
+            android:hint="Ім'я"
+            android:inputType="textPersonName"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/et_last_name"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_medium"
+            android:hint="Прізвище"
+            android:inputType="textPersonName"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/et_password"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_medium"
+            android:hint="Пароль"
+            android:inputType="textPassword"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/et_password_confirm"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_medium"
+            android:hint="Повторити пароль"
+            android:inputType="textPassword"
+            android:textSize="14sp" />
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_medium"
+            android:text="Стать"
+            android:textSize="14sp" />
+
+        <Switch
+            android:id="@+id/switch_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:textColor="#000"
+            android:textOff="М"
+            android:textOn="Ж" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_register"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_padding_medium"
+        android:layout_marginTop="@dimen/margin_padding_medium"
+        android:text="Зареєструватися" />
+
+</LinearLayout>

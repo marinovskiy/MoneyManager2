@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MoneyManager</string>
+    <string name="activity_welcome_welcome1">Вітаємо у MoneyManager!</string>
+    <string name="activity_welcome_welcome2">MoneyManager - це додаток для ведення бюджету, який
+        допоможе Вам керувати своїми витратами та прибутками. MoneyManager дозволяє оперувати даними
+        про прибутки та витрати, отримувати інфорацію про поточний баланс, створювати бюджети для
+        родини, компанії чи організації, формувати звіти по датам, категоріями тощо</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
