@@ -1,0 +1,85 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+        applicationId "alex.moneymanager"
+        minSdkVersion 21
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/rxjava.properties'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+ext {
+    supportLibraryVersion = '25.3.1'
+    playServicesVersion = '10.2.6'
+    butterknifeVersion = '8.5.1'
+    daggerVersion = '2.10'
+    retrofit2Version = '2.3.0'
+    okhttp3Version = '3.8.0'
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+//    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+//        transitive = true;
+//    }
+
+    debugCompile 'com.readystatesoftware.chuck:library:1.0.4'
+    releaseCompile 'com.readystatesoftware.chuck:library-no-op:1.0.4'
+
+    compile "com.android.support:support-v4:$supportLibraryVersion"
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    compile "com.android.support:support-v4:$supportLibraryVersion"
+    compile "com.android.support:design:$supportLibraryVersion"
+
+    compile "com.google.firebase:firebase-storage:$playServicesVersion"
+
+    compile "com.jakewharton:butterknife:$butterknifeVersion"
+    provided "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+
+    compile "com.google.dagger:dagger:$daggerVersion"
+    provided "com.google.dagger:dagger-compiler:$daggerVersion"
+
+    compile "com.squareup.okhttp3:okhttp:$okhttp3Version"
+    compile "com.squareup.okhttp3:logging-interceptor:$okhttp3Version"
+    compile "com.squareup.retrofit2:retrofit:$retrofit2Version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit2Version"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofit2Version"
+
+    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    compile 'com.annimon:stream:1.1.7'
+    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
+}
+
+apply plugin: 'com.google.gms.google-services'
