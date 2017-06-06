@@ -13,14 +13,11 @@
         android:orientation="vertical">
 
         <TextView
-            fontPath="fonts/Roboto-Bold.ttf"
+            style="@style/TextViewTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_padding_medium"
-            android:gravity="center"
-            android:text="Реєєстрація"
-            android:textColor="#000"
-            android:textSize="20sp" />
+            android:text="Реєєстрація" />
 
         <!--<TextView-->
         <!--fontPath="fonts/Roboto-Medium.ttf"-->
@@ -32,7 +29,7 @@
         <!--android:gravity="center"-->
         <!--android:lineSpacingExtra="4dp"-->
         <!--android:text="Авторизація за допомогою\nелектронної пошти та паролю"-->
-        <!--android:textColor="#000"-->
+        <!--android:textColor="@color/textColorPrimary"-->
         <!--android:textSize="16sp" />-->
 
     </LinearLayout>
@@ -48,67 +45,62 @@
 
         <EditText
             android:id="@+id/et_email"
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Електронна пошта"
-            android:inputType="textEmailAddress"
-            android:textSize="14sp" />
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/et_first_name"
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_medium"
             android:hint="Ім'я"
-            android:inputType="textPersonName"
-            android:textSize="14sp" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/et_last_name"
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_medium"
             android:hint="Прізвище"
-            android:inputType="textPersonName"
-            android:textSize="14sp" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/et_password"
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_medium"
             android:hint="Пароль"
-            android:inputType="textPassword"
-            android:textSize="14sp" />
+            android:inputType="textPassword" />
 
         <EditText
             android:id="@+id/et_password_confirm"
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_medium"
             android:hint="Повторити пароль"
-            android:inputType="textPassword"
-            android:textSize="14sp" />
+            android:inputType="textPassword" />
 
         <TextView
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/TextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_medium"
             android:text="Стать"
-            android:textSize="14sp" />
+            android:textColor="@color/textColorSecondary" />
 
         <Switch
             android:id="@+id/switch_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_small"
-            android:textColor="#000"
+            android:textColor="@color/textColorPrimary"
             android:textOff="М"
             android:textOn="Ж" />
 

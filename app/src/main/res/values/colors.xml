@@ -7,4 +7,7 @@
 
     <color name="main">#0274D5</color>
     <color name="bgMain">#f8f8f8</color>
+
+    <color name="textColorPrimary">#212121</color>
+    <color name="textColorSecondary">#616161</color>
 </resources>

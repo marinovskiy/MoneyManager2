@@ -16,7 +16,7 @@ public interface ApiService {
      * Auth requests
      */
 
-    @POST("login")
+    @POST("auth/login")
     Observable<Response<User>> login(
             @Header("platformType") String platformType,
             @Header("udid") String udid,

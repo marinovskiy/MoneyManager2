@@ -18,33 +18,23 @@
 
         <ImageView
             android:id="@+id/nav_header_main_avatar"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="@dimen/nav_drawer_header_avatar_size"
+            android:layout_height="@dimen/nav_drawer_header_avatar_size"
             android:src="@drawable/ic_placeholder_avatar" />
 
         <TextView
             android:id="@+id/tv_email"
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/NavDrawerHeaderTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_small"
-            android:ellipsize="end"
-            android:lines="1"
-            android:text="alexander.marinovskiy@gmail.com"
-            android:textColor="@color/colorAccent"
-            android:textSize="16sp" />
+            android:text="alexander.marinovskiy@gmail.com" />
 
         <TextView
             android:id="@+id/tv_name"
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/NavDrawerHeaderTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_small"
-            android:ellipsize="end"
-            android:lines="1"
-            android:text="Alexander Marinovskiy"
-            android:textColor="@color/colorAccent"
-            android:textSize="16sp" />
+            android:text="Alexander Marinovskiy" />
 
     </LinearLayout>
 
@@ -57,18 +47,15 @@
         android:padding="@dimen/margin_padding_medium">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/nav_drawer_menu_icon_size"
+            android:layout_height="@dimen/nav_drawer_menu_icon_size"
             android:src="@drawable/ic_home" />
 
         <TextView
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_padding_small"
-            android:text="Home"
-            android:textColor="#000"
-            android:textSize="14sp" />
+            android:text="Home" />
 
     </LinearLayout>
 
@@ -81,18 +68,15 @@
         android:padding="@dimen/margin_padding_medium">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/nav_drawer_menu_icon_size"
+            android:layout_height="@dimen/nav_drawer_menu_icon_size"
             android:src="@drawable/ic_accounts" />
 
         <TextView
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_padding_small"
-            android:text="Accounts"
-            android:textColor="#000"
-            android:textSize="14sp" />
+            android:text="Accounts" />
 
     </LinearLayout>
 
@@ -105,18 +89,15 @@
         android:padding="@dimen/margin_padding_medium">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/nav_drawer_menu_icon_size"
+            android:layout_height="@dimen/nav_drawer_menu_icon_size"
             android:src="@drawable/ic_organization" />
 
         <TextView
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_padding_small"
-            android:text="Organizations"
-            android:textColor="#000"
-            android:textSize="14sp" />
+            android:text="Organizations" />
 
     </LinearLayout>
 
@@ -129,18 +110,15 @@
         android:padding="@dimen/margin_padding_medium">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/nav_drawer_menu_icon_size"
+            android:layout_height="@dimen/nav_drawer_menu_icon_size"
             android:src="@drawable/ic_profile" />
 
         <TextView
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_padding_small"
-            android:text="Profile"
-            android:textColor="#000"
-            android:textSize="14sp" />
+            android:text="Profile" />
 
     </LinearLayout>
 
@@ -153,18 +131,15 @@
         android:padding="@dimen/margin_padding_medium">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/nav_drawer_menu_icon_size"
+            android:layout_height="@dimen/nav_drawer_menu_icon_size"
             android:src="@drawable/ic_settings" />
 
         <TextView
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_padding_small"
-            android:text="Settings"
-            android:textColor="#000"
-            android:textSize="14sp" />
+            android:text="Settings" />
 
     </LinearLayout>
 
@@ -177,18 +152,15 @@
         android:padding="@dimen/margin_padding_medium">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/nav_drawer_menu_icon_size"
+            android:layout_height="@dimen/nav_drawer_menu_icon_size"
             android:src="@drawable/ic_accounts" />
 
         <TextView
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_padding_small"
-            android:text="Logout"
-            android:textColor="#000"
-            android:textSize="14sp" />
+            android:text="Logout" />
 
     </LinearLayout>
 

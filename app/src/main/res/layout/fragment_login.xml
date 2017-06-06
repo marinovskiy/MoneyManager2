@@ -14,29 +14,22 @@
         android:orientation="vertical">
 
         <TextView
-            fontPath="fonts/Roboto-Bold.ttf"
+            style="@style/TextViewTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_padding_medium"
             android:layout_marginStart="@dimen/margin_padding_medium"
             android:layout_marginTop="@dimen/margin_padding_medium"
-            android:gravity="center"
-            android:text="Авторизація"
-            android:textColor="#000"
-            android:textSize="20sp" />
+            android:text="Авторизація" />
 
         <TextView
-            fontPath="fonts/Roboto-Medium.ttf"
+            style="@style/TextViewSubTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_padding_medium"
             android:layout_marginStart="@dimen/margin_padding_medium"
             android:layout_marginTop="@dimen/margin_padding_small"
-            android:gravity="center"
-            android:lineSpacingExtra="4dp"
-            android:text="Авторизація за допомогою\nелектронної пошти та паролю"
-            android:textColor="#000"
-            android:textSize="16sp" />
+            android:text="Авторизація за допомогою\nелектронної пошти та паролю" />
 
     </LinearLayout>
 
@@ -49,33 +42,29 @@
 
         <EditText
             android:id="@+id/et_email"
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:textSize="14sp" />
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/et_password"
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_medium"
             android:hint="Password"
-            android:inputType="textPassword"
-            android:textSize="14sp" />
+            android:inputType="textPassword" />
 
         <TextView
             android:id="@+id/tv_forgot_password"
-            fontPath="fonts/Roboto-Regular.ttf"
+            style="@style/TextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/margin_padding_medium"
-            android:text="Forgot Password?"
-            android:textColor="#000"
-            android:textSize="14sp" />
+            android:text="Forgot Password?" />
 
     </LinearLayout>
 
