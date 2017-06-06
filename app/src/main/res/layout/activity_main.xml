@@ -31,13 +31,13 @@
                 app:contentInsetEnd="0dp"
                 app:contentInsetStart="0dp">
 
-                <Spinner
-                    android:id="@+id/spinner_accounts"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_gravity="start"
-                    android:backgroundTint="@color/colorAccent" />
+                <!--<Spinner-->
+                    <!--android:id="@+id/spinner_accounts"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentStart="true"-->
+                    <!--android:layout_gravity="start"-->
+                    <!--android:backgroundTint="@color/colorAccent" />-->
 
                 <TextView
                     android:id="@+id/tv_toolbar_title_main"
@@ -49,8 +49,7 @@
                     android:padding="@dimen/margin_padding_medium"
                     android:text="MoneyManager"
                     android:textColor="@color/colorAccent"
-                    android:textSize="22sp"
-                    android:visibility="gone" />
+                    android:textSize="22sp" />
 
             </android.support.v7.widget.Toolbar>
 

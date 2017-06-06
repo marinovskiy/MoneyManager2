@@ -38,8 +38,8 @@ public class MainActivity extends BaseActivity {
     DrawerLayout drawerLayout;
     @BindView(R.id.toolbar_main)
     Toolbar toolbar;
-    @BindView(R.id.spinner_accounts)
-    Spinner spinnerPeriod;
+//    @BindView(R.id.spinner_accounts)
+//    Spinner spinnerPeriod;
     @BindView(R.id.tv_toolbar_title_main)
     TextView tvToolbarTitle;
     @BindView(R.id.rv_accounts)
@@ -78,18 +78,18 @@ public class MainActivity extends BaseActivity {
         );
         spinnerAccountsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_account);
 
-        spinnerPeriod.setAdapter(spinnerAccountsAdapter);
-        spinnerPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "selected account = " + accountsTest.get(position), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(getApplicationContext(), "nothing selected", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        spinnerPeriod.setAdapter(spinnerAccountsAdapter);
+//        spinnerPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(getApplicationContext(), "selected account = " + accountsTest.get(position), Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                Toast.makeText(getApplicationContext(), "nothing selected", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         homeFragment = HomeFragment.newInstance();
         accountsFragment = AccountsFragment.newInstance();
@@ -206,7 +206,7 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
             case R.id.ll_action_nav_settings:
-                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.ll_action_nav_logout:
                 Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
@@ -229,26 +229,26 @@ public class MainActivity extends BaseActivity {
     public void updateMenuByFragment(String fragmentTag) {
         switch (fragmentTag) {
             case HomeFragment.TAG:
-                tvToolbarTitle.setVisibility(View.GONE);
-                spinnerPeriod.setVisibility(View.VISIBLE);
+//                tvToolbarTitle.setVisibility(View.GONE);
+//                spinnerPeriod.setVisibility(View.VISIBLE);
                 break;
             case AccountsFragment.TAG:
-                tvToolbarTitle.setText("Your accounts");
-
-                spinnerPeriod.setVisibility(View.GONE);
-                tvToolbarTitle.setVisibility(View.VISIBLE);
+//                tvToolbarTitle.setText("Your accounts");
+//
+//                spinnerPeriod.setVisibility(View.GONE);
+//                tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
             case OrganizationsFragment.TAG:
-                tvToolbarTitle.setText("Your organizations");
-
-                spinnerPeriod.setVisibility(View.GONE);
-                tvToolbarTitle.setVisibility(View.VISIBLE);
+//                tvToolbarTitle.setText("Your organizations");
+//
+//                spinnerPeriod.setVisibility(View.GONE);
+//                tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
             case ProfileFragment.TAG:
-                tvToolbarTitle.setText("Your profile");
-
-                spinnerPeriod.setVisibility(View.GONE);
-                tvToolbarTitle.setVisibility(View.VISIBLE);
+//                tvToolbarTitle.setText("Your profile");
+//
+//                spinnerPeriod.setVisibility(View.GONE);
+//                tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
         }
     }

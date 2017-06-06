@@ -2,6 +2,7 @@ package alex.moneymanager.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -68,6 +69,15 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        float balance = new Random().nextInt(500) - 300;
+
+        if (balance < 0) {
+            tvAccountBalance.setBackgroundResource(R.drawable.tv_balance_bg_negative);
+        } else {
+            tvAccountBalance.setBackgroundResource(R.drawable.tv_balance_bg_positive);
+        }
+        tvAccountBalance.setText(String.format("Поточний баланс: %s %s", balance, "$"));
 
         linearLayoutManager = new LinearLayoutManager(getContext());
         rvOperationsAdapter = new OperationsAdapter(generateOperations());

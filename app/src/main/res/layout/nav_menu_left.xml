@@ -55,7 +55,7 @@
             style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home" />
+            android:text="Головна" />
 
     </LinearLayout>
 
@@ -76,7 +76,7 @@
             style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Accounts" />
+            android:text="Аккаунти" />
 
     </LinearLayout>
 
@@ -97,7 +97,28 @@
             style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Organizations" />
+            android:text="Групи" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_action_nav_reports"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_padding_medium">
+
+        <ImageView
+            android:layout_width="@dimen/nav_drawer_menu_icon_size"
+            android:layout_height="@dimen/nav_drawer_menu_icon_size"
+            android:src="@drawable/ic_reports" />
+
+        <TextView
+            style="@style/NavDrawerMenuTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Звіти" />
 
     </LinearLayout>
 
@@ -118,7 +139,7 @@
             style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Profile" />
+            android:text="Профіль" />
 
     </LinearLayout>
 
@@ -139,7 +160,7 @@
             style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Settings" />
+            android:text="Налаштування" />
 
     </LinearLayout>
 
@@ -160,7 +181,7 @@
             style="@style/NavDrawerMenuTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Logout" />
+            android:text="Вихід" />
 
     </LinearLayout>
 
