@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import alex.moneymanager.R;
 import alex.moneymanager.activities.AuthActivity;
+import alex.moneymanager.activities.MainActivity;
 import alex.moneymanager.application.MoneyManagerApplication;
 import alex.moneymanager.utils.PreferenceUtil;
 import alex.moneymanager.utils.SystemUtils;
@@ -41,7 +42,7 @@ public class OrganizationsFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        ((AuthActivity) getActivity()).updateMenuByFragment(TAG);
+        ((MainActivity) getActivity()).updateMenuByFragment(TAG);
 
         ((MoneyManagerApplication) getActivity().getApplication()).component().inject(this);
     }

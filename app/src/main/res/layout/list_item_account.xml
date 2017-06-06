@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_padding_medium"
+    android:layout_marginEnd="@dimen/margin_padding_medium"
+    android:layout_marginStart="@dimen/margin_padding_medium"
+    android:layout_marginTop="@dimen/margin_padding_medium"
     android:orientation="vertical"
     app:cardCornerRadius="4dp"
     app:cardElevation="2dp"
@@ -23,7 +25,7 @@
 
             <TextView
                 android:id="@+id/tv_account_name"
-                fontPath="fonts/RussoOne-Regular.ttf"
+                fontPath="fonts/Roboto-Thin.ttf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -36,18 +38,19 @@
 
             <TextView
                 android:id="@+id/tv_account_balance"
-                fontPath="fonts/RussoOne-Regular.ttf"
+                fontPath="fonts/Roboto-Thin.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="473.54 $"
                 android:paddingStart="@dimen/margin_padding_small"
+                android:text="473.54 $"
                 android:textColor="#000"
                 android:textSize="16sp" />
 
         </LinearLayout>
 
         <TextView
-            fontPath="fonts/RussoOne-Regular.ttf"
+            android:id="@+id/tv_last_operation"
+            fontPath="fonts/Roboto-Thin.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

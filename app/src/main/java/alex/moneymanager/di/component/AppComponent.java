@@ -2,12 +2,11 @@ package alex.moneymanager.di.component;
 
 import javax.inject.Singleton;
 
-import alex.moneymanager.activities.ForgotPasswordActivity;
-import alex.moneymanager.activities.LoginActivity;
+import alex.moneymanager.activities.AccountDetailsActivity;
+import alex.moneymanager.activities.AuthActivity;
 import alex.moneymanager.activities.MainActivity;
-import alex.moneymanager.activities.RegistrationActivity;
+import alex.moneymanager.activities.NewOperationActivity;
 import alex.moneymanager.activities.SplashActivity;
-import alex.moneymanager.activities.WelcomeActivity;
 import alex.moneymanager.application.MoneyManagerApplication;
 import alex.moneymanager.di.module.AppModule;
 import alex.moneymanager.di.module.ModelModule;
@@ -41,15 +40,13 @@ public interface AppComponent {
     // activities
     void inject(SplashActivity activity);
 
-    void inject(WelcomeActivity activity);
-
-    void inject(LoginActivity activity);
-
-    void inject(ForgotPasswordActivity activity);
-
-    void inject(RegistrationActivity activity);
+    void inject(AuthActivity activity);
 
     void inject(MainActivity activity);
+
+    void inject(NewOperationActivity activity);
+
+    void inject(AccountDetailsActivity activity);
 
     // fragments
     void inject(LoginFragment fragment);

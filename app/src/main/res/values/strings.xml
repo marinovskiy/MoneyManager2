@@ -1,4 +1,12 @@
 <resources>
+
+    <string-array name="dates">
+        <item>By day</item>
+        <item>By week</item>
+        <item>By month</item>
+        <item>By year</item>
+    </string-array>
+
     <string name="app_name">MoneyManager</string>
     <string name="activity_welcome_welcome1">Вітаємо у MoneyManager!</string>
     <string name="activity_welcome_welcome2">MoneyManager - це додаток для ведення бюджету, який

@@ -2,14 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bgMain"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
     <TextView
+        android:id="@+id/tv_account_name"
+        fontPath="fonts/Roboto-Regular.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="organizations" />
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxEms="10"
+        android:padding="@dimen/margin_padding_medium"
+        android:text="Cash 453.75 $"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="16sp" />
 
 </LinearLayout>

@@ -9,51 +9,76 @@
     android:fitsSystemWindows="true"
     tools:ignore="MissingPrefix">
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_main"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:contentInsetEnd="0dp"
-            android:contentInsetStart="0dp"
-            android:elevation="4dp"
-            app:contentInsetEnd="0dp"
-            app:contentInsetStart="0dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                fontPath="fonts/RussoOne-Regular.ttf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:padding="@dimen/margin_padding_medium"
-                android:text="MoneyManager"
-                android:textColor="@color/colorAccent"
-                android:textSize="22sp" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_main"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                android:contentInsetEnd="0dp"
+                android:contentInsetStart="0dp"
+                android:elevation="4dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetStart="0dp">
 
-        </android.support.v7.widget.Toolbar>
+                <Spinner
+                    android:id="@+id/spinner_accounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="start"
+                    android:backgroundTint="@color/colorAccent" />
 
-        <FrameLayout
-            android:id="@+id/fl_container_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/tv_toolbar_title_main"
+                    fontPath="fonts/RussoOne-Regular.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/margin_padding_medium"
+                    android:text="MoneyManager"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="22sp"
+                    android:visibility="gone" />
 
-    </LinearLayout>
+            </android.support.v7.widget.Toolbar>
 
-    <include layout="@layout/nav_menu" />
+            <FrameLayout
+                android:id="@+id/fl_container_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    <!--<android.support.design.widget.NavigationView-->
-    <!--android:id="@+id/nav_view_main"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_gravity="start"-->
-    <!--android:fitsSystemWindows="true"-->
-    <!--app:headerLayout="@layout/nav_header_main"-->
-    <!--app:menu="@menu/nav_menu_main" />-->
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_new_operation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:clickable="true"
+            android:src="@drawable/ic_add"
+            app:borderWidth="2dp"
+            app:elevation="4dp"
+            app:fabSize="normal"
+            app:layout_anchorGravity="bottom|right|end" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <include layout="@layout/nav_menu_left" />
+
+    <include layout="@layout/nav_menu_right" />
 
 </android.support.v4.widget.DrawerLayout>

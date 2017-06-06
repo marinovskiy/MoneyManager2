@@ -13,7 +13,7 @@ public class Operation {
 
     private float sum;
 
-    private int category;
+    private Category category;
 
     private int account;
 
@@ -24,8 +24,8 @@ public class Operation {
     public Operation() {
     }
 
-    public Operation(int id, String type, String description, float sum, int category, int account,
-                     String createdAt, String updatedAt) {
+    public Operation(int id, String type, String description, float sum, Category category,
+                     int account, String createdAt, String updatedAt) {
         this.id = id;
         this.type = type;
         this.description = description;
@@ -68,11 +68,11 @@ public class Operation {
         this.sum = sum;
     }
 
-    public int getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

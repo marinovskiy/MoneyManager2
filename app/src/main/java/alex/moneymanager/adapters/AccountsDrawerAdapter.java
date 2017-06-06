@@ -14,13 +14,13 @@ import alex.moneymanager.entities.network.Operation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.AccountViewHolder> {
+public class AccountsDrawerAdapter extends RecyclerView.Adapter<AccountsDrawerAdapter.AccountViewHolder> {
 
     private OnItemClickListener onItemClickListener;
 
     private List<Account> accounts;
 
-    public AccountsAdapter(List<Account> accounts) {
+    public AccountsDrawerAdapter(List<Account> accounts) {
         this.accounts = accounts;
     }
 
@@ -31,7 +31,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
     @Override
     public AccountViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new AccountViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_account, parent, false));
+                .inflate(R.layout.drawer_list_item_account, parent, false));
     }
 
     @Override
@@ -48,10 +48,6 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
 
         @BindView(R.id.tv_account_name)
         TextView tvAccountName;
-        @BindView(R.id.tv_account_balance)
-        TextView tvAccountBalance;
-        @BindView(R.id.tv_last_operation)
-        TextView tvLastOperation;
 
         AccountViewHolder(View itemView) {
             super(itemView);
@@ -67,24 +63,14 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
         }
 
         void bindAccount(Account account) {
-            tvAccountName.setText(account.getName());
-            tvAccountBalance.setText(
-                    String.format("%s %s", account.getBalance(), account.getCurrency().getSymbol())
+            tvAccountName.setText(
+                    String.format(
+                            "%s %s %s",
+                            account.getName(),
+                            account.getBalance(),
+                            account.getCurrency().getSymbol()
+                    )
             );
-
-            if (account.getOperations() != null && !account.getOperations().isEmpty()) {
-                Operation lastOperation = account.getOperations().get(account.getOperations().size());
-
-                tvLastOperation.setText(
-                        String.format(
-                                "Остання операція: %s %s",
-                                lastOperation.getSum(),
-                                account.getCurrency().getSymbol()
-                        )
-                );
-            } else {
-                tvLastOperation.setText("Цей аккаунт ще не має операцій");
-            }
         }
     }
 

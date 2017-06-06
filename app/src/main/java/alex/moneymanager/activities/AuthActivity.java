@@ -93,7 +93,7 @@ public class AuthActivity extends BaseActivity
                 break;
             case LoginFragment.TAG:
             case RegistrationFragment.TAG:
-//            case ForgotPasswordFragment.TAG:
+            case ForgotPasswordFragment.TAG:
                 if (getSupportActionBar() != null) {
                     getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);

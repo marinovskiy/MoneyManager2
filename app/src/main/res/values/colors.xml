@@ -10,4 +10,7 @@
 
     <color name="textColorPrimary">#212121</color>
     <color name="textColorSecondary">#616161</color>
+
+    <color name="colorPositive">#8BC34A</color>
+    <color name="colorNegative">#F44336</color>
 </resources>

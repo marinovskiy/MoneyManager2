@@ -10,7 +10,7 @@ public class Account {
 
     private String description;
 
-    private int currency;
+    private Currency currency;
 
     private float balance;
 
@@ -23,7 +23,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(int id, String name, String description, int currency, float balance,
+    public Account(int id, String name, String description, Currency currency, float balance,
                    Integer user, List<Operation> operations, Integer organization) {
         this.id = id;
         this.name = name;
@@ -59,11 +59,11 @@ public class Account {
         this.description = description;
     }
 
-    public int getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(int currency) {
+    public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 

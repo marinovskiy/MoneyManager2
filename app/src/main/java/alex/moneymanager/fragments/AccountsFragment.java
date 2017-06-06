@@ -2,15 +2,24 @@ package alex.moneymanager.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import alex.moneymanager.R;
 import alex.moneymanager.activities.AuthActivity;
+import alex.moneymanager.activities.MainActivity;
+import alex.moneymanager.adapters.AccountsAdapter;
 import alex.moneymanager.application.MoneyManagerApplication;
+import alex.moneymanager.entities.network.Account;
+import alex.moneymanager.entities.network.Currency;
 import alex.moneymanager.utils.PreferenceUtil;
 import alex.moneymanager.utils.SystemUtils;
 import butterknife.BindView;
@@ -19,10 +28,16 @@ public class AccountsFragment extends BaseFragment {
 
     public static final String TAG = "AccountsFragment";
 
+    @BindView(R.id.rv_accounts)
+    RecyclerView rvAccounts;
+
     @Inject
     SystemUtils systemUtils;
     @Inject
     PreferenceUtil preferenceUtil;
+
+    private LinearLayoutManager linearLayoutManager;
+    private AccountsAdapter rvAccountsAdapter;
 
     public AccountsFragment() {
     }
@@ -41,9 +56,24 @@ public class AccountsFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        ((AuthActivity) getActivity()).updateMenuByFragment(TAG);
+        ((MainActivity) getActivity()).updateMenuByFragment(TAG);
 
         ((MoneyManagerApplication) getActivity().getApplication()).component().inject(this);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        rvAccountsAdapter = new AccountsAdapter(generateAccounts());
+
+        rvAccounts.setLayoutManager(linearLayoutManager);
+        rvAccounts.setAdapter(rvAccountsAdapter);
+
+        rvAccountsAdapter.setOnItemClickListener(position -> {
+
+        });
     }
 
     @Override
@@ -78,4 +108,14 @@ public class AccountsFragment extends BaseFragment {
 //
 //        fragment.show(getChildFragmentManager(), ErrorDialogFragment.TAG);
 //    }
+
+    private List<Account> generateAccounts() {
+        List<Account> accounts = new ArrayList<>();
+
+        for (int i = 0; i < 15; i++) {
+            accounts.add(new Account(++i, "test" + i, "sfsafsaf", new Currency(i, "Dollar USD", "$"), 45.454f, null, null, null));
+        }
+
+        return accounts;
+    }
 }

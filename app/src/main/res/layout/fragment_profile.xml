@@ -5,11 +5,23 @@
     android:layout_height="match_parent"
     android:background="@color/bgMain"
     android:orientation="vertical"
+    android:padding="@dimen/margin_padding_medium"
     tools:ignore="MissingPrefix">
 
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_placeholder_avatar_blue" />
+
     <TextView
+        android:text="Alexander Marinovskiy"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="home" />
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="alexander.marinovskiy@gmail.com"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

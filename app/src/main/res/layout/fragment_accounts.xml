@@ -7,9 +7,14 @@
     android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="home" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_accounts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingBottom="@dimen/margin_padding_medium"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/list_item_account" />
 
 </LinearLayout>
