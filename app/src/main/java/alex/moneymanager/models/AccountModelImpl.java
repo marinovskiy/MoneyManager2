@@ -64,7 +64,10 @@ public class AccountModelImpl implements AccountModel {
 
     @Override
     public Observable<Response<AccountResponse>> userAccountApi(int accountId) {
-        return null;
+        return apiClient.getApiService().userAccount(
+                preferenceUtil.getApiKey(),
+                accountId
+        );
     }
 
     @Override

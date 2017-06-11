@@ -12,6 +12,8 @@ import alex.moneymanager.models.CurrencyModel;
 import alex.moneymanager.models.CurrencyModelImpl;
 import alex.moneymanager.models.InitialDataModel;
 import alex.moneymanager.models.InitialDataModelImpl;
+import alex.moneymanager.models.OperationModel;
+import alex.moneymanager.models.OperationModelImpl;
 import alex.moneymanager.models.OrganizationModel;
 import alex.moneymanager.models.OrganizationModelImpl;
 import alex.moneymanager.utils.PreferenceUtil;
@@ -51,5 +53,11 @@ public class ModelModule {
     OrganizationModel provideOrganizationModel(ApiClient apiClient, RealmManager realmManager,
                                                PreferenceUtil preferenceUtil) {
         return new OrganizationModelImpl(apiClient, realmManager, preferenceUtil);
+    }
+
+    @Provides
+    OperationModel provideOperationModel(ApiClient apiClient, RealmManager realmManager,
+                                         PreferenceUtil preferenceUtil) {
+        return new OperationModelImpl(apiClient, realmManager, preferenceUtil);
     }
 }

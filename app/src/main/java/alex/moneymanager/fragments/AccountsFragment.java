@@ -82,6 +82,8 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        switchAccount(lastAccountId);
     }
 
     @Override
@@ -178,6 +180,8 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
     public void switchAccount(int accountId) {
         lastAccountId = accountId;
 
-        presenter.loadAccount(accountId);
+        if (presenter != null) {
+            presenter.loadAccount(accountId);
+        }
     }
 }

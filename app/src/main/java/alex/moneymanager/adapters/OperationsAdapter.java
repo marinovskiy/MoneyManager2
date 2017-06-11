@@ -26,6 +26,7 @@ public class OperationsAdapter extends RecyclerView.Adapter<OperationsAdapter.Op
 
     public void updateOperations(List<Operation> operations) {
         this.operations = operations;
+        notifyDataSetChanged();
     }
 
     @Override

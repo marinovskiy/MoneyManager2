@@ -13,4 +13,6 @@ public interface CategoryModel extends BaseModel {
 
     void saveCategoriesDb(List<Category> categories);
 
+    Observable<List<Category>> categoriesDb();
+
 }

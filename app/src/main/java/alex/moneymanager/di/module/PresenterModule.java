@@ -5,13 +5,18 @@ import alex.moneymanager.models.AuthModel;
 import alex.moneymanager.models.CategoryModel;
 import alex.moneymanager.models.CurrencyModel;
 import alex.moneymanager.models.InitialDataModel;
+import alex.moneymanager.models.OperationModel;
 import alex.moneymanager.models.OrganizationModel;
+import alex.moneymanager.presenters.AccountsPresenter;
+import alex.moneymanager.presenters.AccountsPresenterImpl;
 import alex.moneymanager.presenters.LoginPresenter;
 import alex.moneymanager.presenters.LoginPresenterImpl;
 import alex.moneymanager.presenters.MainPresenter;
 import alex.moneymanager.presenters.MainPresenterImpl;
 import alex.moneymanager.presenters.NewAccountPresenter;
 import alex.moneymanager.presenters.NewAccountPresenterImpl;
+import alex.moneymanager.presenters.NewOperationPresenter;
+import alex.moneymanager.presenters.NewOperationPresenterImpl;
 import alex.moneymanager.presenters.RegistrationPresenter;
 import alex.moneymanager.presenters.RegistrationPresenterImpl;
 import alex.moneymanager.presenters.WelcomePresenter;
@@ -59,5 +64,17 @@ public class PresenterModule {
                                                    CurrencyModel currencyModel,
                                                    AccountModel accountModel) {
         return new NewAccountPresenterImpl(systemUtils, currencyModel, accountModel);
+    }
+
+    @Provides
+    NewOperationPresenter provideNewOperationPresenter(SystemUtils systemUtils,
+                                                       CategoryModel categoryModel,
+                                                       OperationModel operationModel) {
+        return new NewOperationPresenterImpl(systemUtils, categoryModel, operationModel);
+    }
+
+    @Provides
+    AccountsPresenter provideAccountsPresenter(SystemUtils systemUtils, AccountModel accountModel) {
+        return new AccountsPresenterImpl(systemUtils, accountModel);
     }
 }

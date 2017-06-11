@@ -14,6 +14,6 @@ public interface NewAccountView extends BaseView {
 
     void dismissProgressDialog();
 
-    void showErrorDialog();
+    void showErrorDialog(int errorCase);
 
 }

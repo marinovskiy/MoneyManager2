@@ -57,6 +57,7 @@
             android:textSize="16sp" />
 
         <RadioGroup
+            android:id="@+id/rg_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -64,6 +65,7 @@
             android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/rb_type_income"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_padding_medium"
@@ -72,6 +74,7 @@
                 android:textSize="14sp" />
 
             <RadioButton
+                android:id="@+id/rb_type_expense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_padding_medium"

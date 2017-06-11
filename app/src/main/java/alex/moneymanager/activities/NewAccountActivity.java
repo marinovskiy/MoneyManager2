@@ -32,6 +32,9 @@ import butterknife.BindView;
 
 public class NewAccountActivity extends BaseActivity implements NewAccountView {
 
+    public static final int ERROR_CASE_CURRENCIES = 0;
+    public static final int ERROR_CASE_NEW_ACCOUNT = 1;
+
     @BindView(R.id.toolbar_new_account)
     Toolbar toolbar;
     @BindView(R.id.et_name)
@@ -159,7 +162,7 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
     }
 
     @Override
-    public void showErrorDialog() {
+    public void showErrorDialog(int errorCase) {
         String errorMessage;
         if (systemUtils.isConnected()) {
             errorMessage = getString(R.string.msg_error_while_making_request);
@@ -179,7 +182,14 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
 
                     @Override
                     public void onNegativeButtonClick() {
-                        addNewAccount();
+                        switch (errorCase) {
+                            case ERROR_CASE_CURRENCIES:
+                                presenter.loadCurrencies();
+                                break;
+                            case ERROR_CASE_NEW_ACCOUNT:
+                                addNewAccount();
+                                break;
+                        }
                     }
                 }
         );

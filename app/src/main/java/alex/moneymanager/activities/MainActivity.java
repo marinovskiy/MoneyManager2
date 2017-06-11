@@ -249,6 +249,10 @@ public class MainActivity extends BaseActivity implements MainView {
                         tvEmptyViewNavMenuRight.setVisibility(View.GONE);
                         rvDrawer.setVisibility(View.VISIBLE);
 
+                        if (!accounts.isEmpty()) {
+                            selectAccount(accounts.get(0));
+                        }
+
                         rvDrawer.setAdapter(rvAccountsDrawerAdapter);
 
                         drawerLayout.setDrawerLockMode(
@@ -349,8 +353,10 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @OnClick(R.id.fab_new_operation)
     public void onFabClick() {
+        Intent intent = new Intent(this, NewOperationActivity.class);
+        intent.putExtra(NewOperationActivity.INTENT_KEY_ACCOUNT_ID, selectedAccount.getId());
         startActivityForResult(
-                new Intent(this, NewOperationActivity.class),
+                intent,
                 REQUEST_CODE_NEW_OPERATION
         );
     }
@@ -373,10 +379,6 @@ public class MainActivity extends BaseActivity implements MainView {
                 });
             } else {
                 rvAccountsDrawerAdapter.updateAccounts(accounts);
-            }
-
-            if (!accounts.isEmpty()) {
-                selectAccount(accounts.get(0));
             }
         }
         if (organizations != null) {
@@ -443,7 +445,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
             accountsFragment.switchAccount(account.getId());
 
-            drawerLayout.closeDrawer(GravityCompat.START);
+            drawerLayout.closeDrawer(GravityCompat.END);
         }
     }
 

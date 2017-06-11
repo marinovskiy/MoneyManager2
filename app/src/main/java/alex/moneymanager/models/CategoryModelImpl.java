@@ -7,6 +7,7 @@ import alex.moneymanager.api.response.CategoriesResponse;
 import alex.moneymanager.db.RealmManager;
 import alex.moneymanager.entities.db.Category;
 import io.reactivex.Observable;
+import io.realm.RealmResults;
 import retrofit2.Response;
 
 public class CategoryModelImpl implements CategoryModel {
@@ -27,5 +28,16 @@ public class CategoryModelImpl implements CategoryModel {
     @Override
     public void saveCategoriesDb(List<Category> categories) {
         realmManager.getRealm().executeTransaction(realm -> realm.copyToRealmOrUpdate(categories));
+    }
+
+    @Override
+    public Observable<List<Category>> categoriesDb() {
+        RealmResults<Category> categories = realmManager.getRealm()
+                .where(Category.class)
+                .findAll();
+
+        List<Category> unManagedCategories = realmManager.getRealm().copyFromRealm(categories);
+
+        return Observable.just(unManagedCategories);
     }
 }

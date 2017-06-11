@@ -2,55 +2,55 @@ package alex.moneymanager.presenters;
 
 import java.util.List;
 
-import alex.moneymanager.activities.NewAccountActivity;
-import alex.moneymanager.entities.db.Currency;
-import alex.moneymanager.entities.network.NetworkAccount;
-import alex.moneymanager.models.AccountModel;
-import alex.moneymanager.models.CurrencyModel;
+import alex.moneymanager.activities.NewOperationActivity;
+import alex.moneymanager.entities.db.Category;
+import alex.moneymanager.entities.network.NetworkOperation;
+import alex.moneymanager.models.CategoryModel;
+import alex.moneymanager.models.OperationModel;
 import alex.moneymanager.utils.SystemUtils;
-import alex.moneymanager.views.NewAccountView;
+import alex.moneymanager.views.NewOperationView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class NewAccountPresenterImpl extends AbstractPresenter<NewAccountView>
-        implements NewAccountPresenter {
+public class NewOperationPresenterImpl extends AbstractPresenter<NewOperationView>
+        implements NewOperationPresenter {
 
     private SystemUtils systemUtils;
-    private CurrencyModel currencyModel;
-    private AccountModel accountModel;
+    private CategoryModel categoryModel;
+    private OperationModel operationModel;
 
-    public NewAccountPresenterImpl(SystemUtils systemUtils, CurrencyModel currencyModel,
-                                   AccountModel accountModel) {
+    public NewOperationPresenterImpl(SystemUtils systemUtils, CategoryModel categoryModel,
+                                     OperationModel operationModel) {
         this.systemUtils = systemUtils;
-        this.currencyModel = currencyModel;
-        this.accountModel = accountModel;
+        this.categoryModel = categoryModel;
+        this.operationModel = operationModel;
     }
 
     @Override
-    public void loadCurrencies() {
+    public void loadCategories() {
         if (isViewAttached()) {
             getView().showProgressDialog();
         }
 
         if (systemUtils.isConnected()) {
             addSubscription(
-                    currencyModel.currenciesApi()
+                    categoryModel.categoriesApi()
                             .subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(response -> {
                                 if (response.isSuccessful()) {
-                                    List<Currency> currencies = response.body().getCurrencies();
-                                    currencyModel.saveCurrenciesDb(currencies);
+                                    List<Category> categories = response.body().getCategories();
+                                    categoryModel.saveCategoriesDb(categories);
 
                                     if (isViewAttached()) {
                                         getView().dismissProgressDialog();
-                                        getView().setCurrencies(currencies);
+                                        getView().setCategories(categories);
                                     }
                                 } else {
                                     if (isViewAttached()) {
                                         getView().dismissProgressDialog();
                                         getView().showErrorDialog(
-                                                NewAccountActivity.ERROR_CASE_CURRENCIES
+                                                NewOperationActivity.ERROR_CASE_CATEGORIES
                                         );
                                     }
                                 }
@@ -59,27 +59,27 @@ public class NewAccountPresenterImpl extends AbstractPresenter<NewAccountView>
                                 if (isViewAttached()) {
                                     getView().dismissProgressDialog();
                                     getView().showErrorDialog(
-                                            NewAccountActivity.ERROR_CASE_CURRENCIES
+                                            NewOperationActivity.ERROR_CASE_CATEGORIES
                                     );
                                 }
                             })
             );
         } else {
             addSubscription(
-                    currencyModel.currenciesDb()
+                    categoryModel.categoriesDb()
                             .subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(currencies -> {
+                            .subscribe(categories -> {
                                 if (isViewAttached()) {
                                     getView().dismissProgressDialog();
-                                    getView().setCurrencies(currencies);
+                                    getView().setCategories(categories);
                                 }
                             }, throwable -> {
                                 throwable.printStackTrace();
                                 if (isViewAttached()) {
                                     getView().dismissProgressDialog();
                                     getView().showErrorDialog(
-                                            NewAccountActivity.ERROR_CASE_CURRENCIES
+                                            NewOperationActivity.ERROR_CASE_CATEGORIES
                                     );
                                 }
                             })
@@ -88,28 +88,23 @@ public class NewAccountPresenterImpl extends AbstractPresenter<NewAccountView>
     }
 
     @Override
-    public void addNewUserAccount(NetworkAccount account) {
+    public void addNewOperation(int accountId, NetworkOperation operation) {
         if (isViewAttached()) {
             getView().showProgressDialog();
         }
 
         addSubscription(
-                accountModel.newUserAccountApi(account)
+                operationModel.newOperation(accountId, operation)
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(response -> {
-                            if (response.isSuccessful()) {
-                                accountModel.saveAccountDb(response.body().getAccount());
-
-                                if (isViewAttached()) {
-                                    getView().dismissProgressDialog();
-                                    getView().accountAddedSuccess();
-                                }
-                            } else {
-                                if (isViewAttached()) {
+                            if (isViewAttached()) {
+                                if (response.isSuccessful()) {
+                                    getView().operationAddedSuccess();
+                                } else {
                                     getView().dismissProgressDialog();
                                     getView().showErrorDialog(
-                                            NewAccountActivity.ERROR_CASE_NEW_ACCOUNT
+                                            NewOperationActivity.ERROR_CASE_NEW_OPERATION
                                     );
                                 }
                             }
@@ -118,7 +113,7 @@ public class NewAccountPresenterImpl extends AbstractPresenter<NewAccountView>
                             if (isViewAttached()) {
                                 getView().dismissProgressDialog();
                                 getView().showErrorDialog(
-                                        NewAccountActivity.ERROR_CASE_NEW_ACCOUNT
+                                        NewOperationActivity.ERROR_CASE_NEW_OPERATION
                                 );
                             }
                         })

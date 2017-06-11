@@ -35,6 +35,7 @@ public class AccountsPresenterImpl extends AbstractPresenter<AccountsView>
                                     accountModel.saveAccountDb(account);
 
                                     if (isViewAttached()) {
+                                        getView().dismissProgressDialog();
                                         getView().setAccount(account);
                                     }
                                 } else {
@@ -58,6 +59,7 @@ public class AccountsPresenterImpl extends AbstractPresenter<AccountsView>
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(account -> {
                                 if (isViewAttached()) {
+                                    getView().dismissProgressDialog();
                                     getView().setAccount(account);
                                 }
                             }, throwable -> {
