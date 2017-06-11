@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/margin_padding_small"
+    android:layout_marginStart="@dimen/margin_padding_small"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/margin_padding_small"
+    android:paddingTop="@dimen/margin_padding_small"
+    tools:ignore="MissingPrefix">
+
+    <TextView
+        android:id="@+id/tv_account_number"
+        fontPath="fonts/Roboto-Regular.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="14sp"
+        tools:text="1)" />
+
+    <TextView
+        android:id="@+id/tv_account_name"
+        fontPath="fonts/Roboto-Regular.ttf"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_tiny"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="14sp"
+        tools:text="Pizza" />
+
+    <TextView
+        android:id="@+id/tv_account_balance"
+        fontPath="fonts/Roboto-Regular.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_medium"
+        android:lines="1"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="14sp"
+        tools:text="Food" />
+
+</LinearLayout>

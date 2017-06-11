@@ -81,7 +81,7 @@ public class OperationsAdapter extends RecyclerView.Adapter<OperationsAdapter.Op
                 number = String.valueOf(getAdapterPosition() + 1);
             }
             tvOperationNumber.setText(number);
-            
+
             tvOperationDescription.setText(operation.getDescription());
             tvOperationCategory.setText(operation.getCategory().getName());
 

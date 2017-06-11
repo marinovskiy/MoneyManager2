@@ -26,12 +26,13 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
 
     public void updateAccounts(List<Account> accounts) {
         this.accounts = accounts;
+        notifyDataSetChanged();
     }
 
     @Override
     public AccountViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new AccountViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_account, parent, false));
+                .inflate(R.layout.list_item_account1, parent, false));
     }
 
     @Override
@@ -46,12 +47,14 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
 
     class AccountViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        @BindView(R.id.tv_account_number)
+        TextView tvAccountNumber;
         @BindView(R.id.tv_account_name)
         TextView tvAccountName;
         @BindView(R.id.tv_account_balance)
         TextView tvAccountBalance;
-        @BindView(R.id.tv_last_operation)
-        TextView tvLastOperation;
+//        @BindView(R.id.tv_last_operation)
+//        TextView tvLastOperation;
 
         AccountViewHolder(View itemView) {
             super(itemView);
@@ -62,29 +65,42 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
         @Override
         public void onClick(View v) {
             if (onItemClickListener != null) {
-                onItemClickListener.onItemClick(getAdapterPosition());
+                onItemClickListener.onItemClick(v, getAdapterPosition());
             }
         }
 
-        void bindAccount(Account account) {
+        void bindAccount(Account account) {String number;
+            if (getAdapterPosition() + 1 < 10) {
+                number = String.format(" %s", getAdapterPosition() + 1);
+            } else {
+                number = String.valueOf(getAdapterPosition() + 1);
+            }
+            tvAccountNumber.setText(number);
+
             tvAccountName.setText(account.getName());
+
             tvAccountBalance.setText(
                     String.format("%s %s", account.getBalance(), account.getCurrency().getSymbol())
             );
-
-            if (account.getOperations() != null && !account.getOperations().isEmpty()) {
-                Operation lastOperation = account.getOperations().get(account.getOperations().size());
-
-                tvLastOperation.setText(
-                        String.format(
-                                "Остання операція: %s %s",
-                                lastOperation.getSum(),
-                                account.getCurrency().getSymbol()
-                        )
-                );
+            if (account.getBalance() < 0) {
+                tvAccountBalance.setBackgroundResource(R.drawable.tv_balance_bg_negative);
             } else {
-                tvLastOperation.setText("Цей аккаунт ще не має операцій");
+                tvAccountBalance.setBackgroundResource(R.drawable.tv_balance_bg_positive);
             }
+
+//            if (account.getOperations() != null && !account.getOperations().isEmpty()) {
+//                Operation lastOperation = account.getOperations().get(account.getOperations().size());
+//
+//                tvLastOperation.setText(
+//                        String.format(
+//                                "Остання операція: %s %s",
+//                                lastOperation.getSum(),
+//                                account.getCurrency().getSymbol()
+//                        )
+//                );
+//            } else {
+//                tvLastOperation.setText("Цей аккаунт ще не має операцій");
+//            }
         }
     }
 
@@ -94,6 +110,6 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
 
     public interface OnItemClickListener {
 
-        void onItemClick(int position);
+        void onItemClick(View view, int position);
     }
 }

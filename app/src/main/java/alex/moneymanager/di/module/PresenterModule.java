@@ -17,6 +17,10 @@ import alex.moneymanager.presenters.NewAccountPresenter;
 import alex.moneymanager.presenters.NewAccountPresenterImpl;
 import alex.moneymanager.presenters.NewOperationPresenter;
 import alex.moneymanager.presenters.NewOperationPresenterImpl;
+import alex.moneymanager.presenters.NewOrganizationPresenter;
+import alex.moneymanager.presenters.NewOrganizationPresenterImpl;
+import alex.moneymanager.presenters.OrganizationsPresenter;
+import alex.moneymanager.presenters.OrganizationsPresenterImpl;
 import alex.moneymanager.presenters.RegistrationPresenter;
 import alex.moneymanager.presenters.RegistrationPresenterImpl;
 import alex.moneymanager.presenters.WelcomePresenter;
@@ -78,4 +82,16 @@ public class PresenterModule {
                                                OperationModel operationModel) {
         return new AccountsPresenterImpl(systemUtils, accountModel, operationModel);
     }
+
+    @Provides
+    OrganizationsPresenter provideOrganizationsPresenter(SystemUtils systemUtils,
+                                                         OrganizationModel organizationModel) {
+        return new OrganizationsPresenterImpl(systemUtils, organizationModel);
+    }
+
+    @Provides
+    NewOrganizationPresenter provideNewOrganizationPresenter(OrganizationModel organizationModel) {
+        return new NewOrganizationPresenterImpl(organizationModel);
+    }
+
 }

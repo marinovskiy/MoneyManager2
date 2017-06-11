@@ -38,8 +38,10 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
 
     public static final String TAG = "AccountsFragment";
 
-    public static final int REQUEST_CODE_NEW_OPERATION = 1122;
+    public static final int REQUEST_CODE_EDIT_OPERATION = 1122;
 
+    @BindView(R.id.tv_account_description)
+    TextView tvAccountDescription;
     @BindView(R.id.tv_account_balance)
     TextView tvAccountBalance;
     @BindView(R.id.rv_operations)
@@ -99,7 +101,7 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_CODE_NEW_OPERATION:
+                case REQUEST_CODE_EDIT_OPERATION:
                     if (account != null) {
                         presenter.loadAccount(account.getId());
                     }
@@ -119,6 +121,14 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
         if (account != null) {
             this.account = account;
 
+            if (this.account.getDescription() != null) {
+                tvAccountDescription.setVisibility(View.VISIBLE);
+                tvAccountDescription.setText(account.getDescription());
+
+            } else {
+                tvAccountDescription.setVisibility(View.GONE);
+            }
+
             if (account.getBalance() < 0) {
                 tvAccountBalance.setBackgroundResource(R.drawable.tv_balance_bg_negative);
             } else {
@@ -135,10 +145,10 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
             if (this.account.getOperations() != null) {
 
                 if (rvOperationsAdapter == null) {
-                    rvOperationsAdapter = new OperationsAdapter(account.getOperations());
+                    rvOperationsAdapter = new OperationsAdapter(this.account.getOperations());
                     rvOperationsAdapter.setOnItemClickListener((view, position) -> {
                         if (this.account.getOperations() != null) {
-                            showAccountPopupMenu(
+                            showOperationPopupMenu(
                                     view,
                                     this.account.getOperations().get(position).getId()
                             );
@@ -200,11 +210,11 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
         fragment.show(getChildFragmentManager(), ErrorDialogFragment.TAG);
     }
 
-    private void showAccountPopupMenu(View view, int operationId) {
+    private void showOperationPopupMenu(View view, int operationId) {
         lastOperationId = operationId;
 
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
-        popupMenu.inflate(R.menu.popup_menu_operation);
+        popupMenu.inflate(R.menu.popup_menu_edit_delete);
 
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -226,7 +236,7 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
         Intent intent = new Intent(getActivity(), NewOperationActivity.class);
         intent.putExtra(NewOperationActivity.INTENT_KEY_ACCOUNT_ID, lastAccountId);
         intent.putExtra(NewOperationActivity.INTENT_KEY_OPERATION_ID, lastOperationId);
-        startActivityForResult(intent, REQUEST_CODE_NEW_OPERATION);
+        startActivityForResult(intent, REQUEST_CODE_EDIT_OPERATION);
     }
 
     private void deleteOperation() {

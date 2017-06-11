@@ -7,6 +7,7 @@ import alex.moneymanager.activities.AuthActivity;
 import alex.moneymanager.activities.MainActivity;
 import alex.moneymanager.activities.NewAccountActivity;
 import alex.moneymanager.activities.NewOperationActivity;
+import alex.moneymanager.activities.NewOrganizationActivity;
 import alex.moneymanager.activities.SplashActivity;
 import alex.moneymanager.application.MoneyManagerApplication;
 import alex.moneymanager.di.module.AppModule;
@@ -52,6 +53,8 @@ public interface AppComponent {
     void inject(NewOperationActivity activity);
 
     void inject(NewAccountActivity activity);
+
+    void inject(NewOrganizationActivity activity);
 
     void inject(AccountDetailsActivity activity);
 

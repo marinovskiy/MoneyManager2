@@ -3,9 +3,13 @@ package alex.moneymanager.models;
 import java.util.List;
 
 import alex.moneymanager.api.ApiClient;
+import alex.moneymanager.api.request.NewOrganizationRequest;
+import alex.moneymanager.api.response.OrganizationResponse;
 import alex.moneymanager.api.response.OrganizationsResponse;
+import alex.moneymanager.db.DbFields;
 import alex.moneymanager.db.RealmManager;
 import alex.moneymanager.entities.db.Organization;
+import alex.moneymanager.entities.network.NetworkOrganization;
 import alex.moneymanager.utils.PreferenceUtil;
 import io.reactivex.Observable;
 import io.realm.RealmResults;
@@ -48,5 +52,33 @@ public class OrganizationModelImpl implements OrganizationModel {
         List<Organization> unManagedOrganizations = realmManager.getRealm().copyFromRealm(organizations);
 
         return Observable.just(unManagedOrganizations);
+    }
+
+    @Override
+    public Observable<Response<OrganizationResponse>> organizationByIdApi(int organizationId) {
+        return apiClient.getApiService().organizationDetails(
+                preferenceUtil.getApiKey(),
+                organizationId
+        );
+    }
+
+    @Override
+    public Observable<Organization> organizationByIdDb(int organizationId) {
+        Organization organization = realmManager.getRealm()
+                .where(Organization.class)
+                .equalTo(DbFields.ORGANIZATION_ID, organizationId)
+                .findFirst();
+
+        Organization unManagedOrganization = realmManager.getRealm().copyFromRealm(organization);
+
+        return Observable.just(unManagedOrganization);
+    }
+
+    @Override
+    public Observable<Response<OrganizationResponse>> newOrganization(NetworkOrganization organization) {
+        return apiClient.getApiService().newOrganization(
+                preferenceUtil.getApiKey(),
+                new NewOrganizationRequest(organization)
+        );
     }
 }

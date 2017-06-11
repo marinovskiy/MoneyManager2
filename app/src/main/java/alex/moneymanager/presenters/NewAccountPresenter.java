@@ -9,4 +9,6 @@ public interface NewAccountPresenter extends BasePresenter<NewAccountView> {
 
     void addNewUserAccount(NetworkAccount account);
 
+    void addNewOrganizationAccount(int organizationId, NetworkAccount account);
+
 }

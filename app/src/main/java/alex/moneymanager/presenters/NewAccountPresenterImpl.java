@@ -109,7 +109,7 @@ public class NewAccountPresenterImpl extends AbstractPresenter<NewAccountView>
                                 if (isViewAttached()) {
                                     getView().dismissProgressDialog();
                                     getView().showErrorDialog(
-                                            NewAccountActivity.ERROR_CASE_NEW_ACCOUNT
+                                            NewAccountActivity.ERROR_CASE_NEW_USER_ACCOUNT
                                     );
                                 }
                             }
@@ -118,7 +118,45 @@ public class NewAccountPresenterImpl extends AbstractPresenter<NewAccountView>
                             if (isViewAttached()) {
                                 getView().dismissProgressDialog();
                                 getView().showErrorDialog(
-                                        NewAccountActivity.ERROR_CASE_NEW_ACCOUNT
+                                        NewAccountActivity.ERROR_CASE_NEW_USER_ACCOUNT
+                                );
+                            }
+                        })
+        );
+    }
+
+    @Override
+    public void addNewOrganizationAccount(int organizationId, NetworkAccount account) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
+
+        addSubscription(
+                accountModel.newOrganizationAccountApi(organizationId, account)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (response.isSuccessful()) {
+                                accountModel.saveAccountDb(response.body().getAccount());
+
+                                if (isViewAttached()) {
+                                    getView().dismissProgressDialog();
+                                    getView().accountAddedSuccess();
+                                }
+                            } else {
+                                if (isViewAttached()) {
+                                    getView().dismissProgressDialog();
+                                    getView().showErrorDialog(
+                                            NewAccountActivity.ERROR_CASE_NEW_ORGANIZATION_ACCOUNT
+                                    );
+                                }
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        NewAccountActivity.ERROR_CASE_NEW_ORGANIZATION_ACCOUNT
                                 );
                             }
                         })

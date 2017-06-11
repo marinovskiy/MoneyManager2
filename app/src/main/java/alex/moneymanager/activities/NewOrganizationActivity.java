@@ -12,9 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.annimon.stream.Stream;
-
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,58 +20,61 @@ import javax.inject.Inject;
 import alex.moneymanager.R;
 import alex.moneymanager.application.MoneyManagerApplication;
 import alex.moneymanager.dialogs.ErrorDialogFragment;
-import alex.moneymanager.entities.db.Currency;
-import alex.moneymanager.entities.network.NetworkAccount;
-import alex.moneymanager.presenters.NewAccountPresenter;
+import alex.moneymanager.entities.db.Organization;
+import alex.moneymanager.entities.enums.OrganizationType;
+import alex.moneymanager.entities.network.NetworkOrganization;
+import alex.moneymanager.presenters.NewOrganizationPresenter;
 import alex.moneymanager.utils.PreferenceUtil;
 import alex.moneymanager.utils.SystemUtils;
-import alex.moneymanager.views.NewAccountView;
+import alex.moneymanager.views.NewOrganizationView;
 import butterknife.BindView;
 
-public class NewAccountActivity extends BaseActivity implements NewAccountView {
+public class NewOrganizationActivity extends BaseActivity implements NewOrganizationView {
 
     public static final String INTENT_KEY_ORGANIZATION_ID = "intent_key_organization_id";
-    public static final String INTENT_KEY_ACCOUNT_ID = "intent_key_account_id";
 
-    public static final int ERROR_CASE_CURRENCIES = 0;
-    public static final int ERROR_CASE_NEW_USER_ACCOUNT = 1;
-    public static final int ERROR_CASE_NEW_ORGANIZATION_ACCOUNT = 2;
+    public static final int ERROR_CASE_NEW_ORGANIZATION = 0;
+    public static final int ERROR_CASE_EDIT_ORGANIZATION = 1;
 
-    @BindView(R.id.toolbar_new_account)
+    @BindView(R.id.toolbar_new_organization)
     Toolbar toolbar;
     @BindView(R.id.et_name)
     EditText etName;
     @BindView(R.id.et_description)
     EditText etDescription;
-    @BindView(R.id.spinner_currency)
-    Spinner spinnerCurrency;
+    @BindView(R.id.spinner_type)
+    Spinner spinnerType;
 
     @Inject
     SystemUtils systemUtils;
     @Inject
     PreferenceUtil preferenceUtil;
     @Inject
-    NewAccountPresenter presenter;
+    NewOrganizationPresenter presenter;
 
     private ProgressDialog progressDialog;
 
     private String validationErrorMessage;
 
-    private List<Currency> currencies = new ArrayList<>();
+    private ArrayAdapter<String> spinnerAdapterType;
 
     private int organizationId;
-    private int accountId;
+
+    private List<String> organizationTypes = Arrays.asList(
+            OrganizationType.FAMILY,
+            OrganizationType.COMPANY,
+            OrganizationType.ORGANIZATION
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_account);
+        setContentView(R.layout.activity_new_organization);
 
         ((MoneyManagerApplication) getApplication()).component().inject(this);
         presenter.attachView(this);
 
         organizationId = getIntent().getIntExtra(INTENT_KEY_ORGANIZATION_ID, 0);
-        accountId = getIntent().getIntExtra(INTENT_KEY_ACCOUNT_ID, 0);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -83,7 +84,23 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        presenter.loadCurrencies();
+        spinnerAdapterType = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                organizationTypes
+        );
+        spinnerAdapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerType.setAdapter(spinnerAdapterType);
+        spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
     }
 
     @Override
@@ -94,43 +111,13 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_add, menu);
-//
-//        View.OnClickListener menuOnClickListener = v -> {
-//            switch (v.getId()) {
-//                case R.id.action_add:
-//                    if (organizationId == 0) {
-//                        if (accountId == 0) {
-//                            addNewUserAccount();
-//                        } else {
-////                            edit
-//                        }
-//                    } else {
-//                        if (accountId == 0) {
-//                            addNewOrganizationAccount();
-//                        } else {
-////                            edit
-//                        }
-//                    }
-//                    break;
-//            }
-//        };
-//
-//        menu.findItem(R.id.action_add)
-//                .getActionView()
-//                .setOnClickListener(menuOnClickListener);
-
-        if (accountId == 0) {
+        if (organizationId == 0) {
             getMenuInflater().inflate(R.menu.menu_add, menu);
 
             View.OnClickListener menuOnClickListener = v -> {
                 switch (v.getId()) {
                     case R.id.action_add:
-                        if (organizationId == 0) {
-                            addNewUserAccount();
-                        } else {
-                            addNewOrganizationAccount();
-                        }
+                        addNewOrganization();
                         break;
                 }
             };
@@ -144,11 +131,7 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
             View.OnClickListener menuOnClickListener = v -> {
                 switch (v.getId()) {
                     case R.id.action_update:
-                        if (organizationId == 0) {
-//                            edit();
-                        } else {
-//                            edit();
-                        }
+//                        edit();
                         break;
                 }
             };
@@ -173,37 +156,14 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
     }
 
     @Override
-    public void setCurrencies(List<Currency> currencies) {
-        if (currencies != null) {
-            this.currencies = currencies;
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                    this,
-                    android.R.layout.simple_spinner_item,
-                    Stream.of(currencies)
-                            .map(Currency::getName)
-                            .toList()
-            );
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-            spinnerCurrency.setAdapter(adapter);
-            spinnerCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(getBaseContext(), "Position = " + position, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> arg0) {
-                }
-            });
-        }
+    public void organizationAddedSuccess() {
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Override
-    public void accountAddedSuccess() {
-        setResult(RESULT_OK);
-        finish();
+    public void setOrganization(Organization organization) {
+
     }
 
     @Override
@@ -243,14 +203,11 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
                     @Override
                     public void onNegativeButtonClick() {
                         switch (errorCase) {
-                            case ERROR_CASE_CURRENCIES:
-                                presenter.loadCurrencies();
+                            case ERROR_CASE_NEW_ORGANIZATION:
+                                //TODO
                                 break;
-                            case ERROR_CASE_NEW_USER_ACCOUNT:
-                                addNewUserAccount();
-                                break;
-                            case ERROR_CASE_NEW_ORGANIZATION_ACCOUNT:
-                                addNewOrganizationAccount();
+                            case ERROR_CASE_EDIT_ORGANIZATION:
+                                //TODO
                                 break;
                         }
                     }
@@ -264,21 +221,26 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
 
     private boolean isValid() {
         if (getName().isEmpty()) {
-            validationErrorMessage = "Вкажіть назву аккаунта";
+            validationErrorMessage = "Вкажіть назву групи";
+            return false;
+        }
+        if (getDescription().isEmpty()) {
+            validationErrorMessage = "Вкажіть опис групи";
             return false;
         }
 
         return true;
     }
 
-    private void addNewUserAccount() {
+    private void addNewOrganization() {
         if (systemUtils.isConnected()) {
             if (isValid()) {
-                presenter.addNewUserAccount(
-                        new NetworkAccount(
+                presenter.addNewOrganization(
+                        new NetworkOrganization(
                                 getName(),
                                 getDescription(),
-                                getCurrency()
+                                getType(),
+                                false
                         )
                 );
             } else {
@@ -289,23 +251,23 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
         }
     }
 
-    private void addNewOrganizationAccount() {
-        if (systemUtils.isConnected()) {
-            if (isValid()) {
-                presenter.addNewOrganizationAccount(
-                        organizationId,
-                        new NetworkAccount(
-                                getName(),
-                                getDescription(),
-                                getCurrency()
-                        )
-                );
-            } else {
-                Toast.makeText(this, validationErrorMessage, Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, R.string.msg_error_no_internet, Toast.LENGTH_SHORT).show();
-        }
+    private void updateOrganization() {
+//        if (systemUtils.isConnected()) {
+//            if (isValid()) {
+//                presenter.addNewOrganizationAccount(
+//                        organizationId,
+//                        new NetworkAccount(
+//                                getName(),
+//                                getDescription(),
+//                                getCurrency()
+//                        )
+//                );
+//            } else {
+//                Toast.makeText(this, validationErrorMessage, Toast.LENGTH_SHORT).show();
+//            }
+//        } else {
+//            Toast.makeText(this, R.string.msg_error_no_internet, Toast.LENGTH_SHORT).show();
+//        }
     }
 
     private String getName() {
@@ -316,7 +278,7 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
         return etDescription.getText().toString();
     }
 
-    private int getCurrency() {
-        return currencies.get(spinnerCurrency.getSelectedItemPosition()).getId();
+    private String getType() {
+        return organizationTypes.get(spinnerType.getSelectedItemPosition());
     }
 }

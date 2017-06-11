@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +45,9 @@ public class MainActivity extends BaseActivity implements MainView {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int REQUEST_CODE_NEW_OPERATION = 12345;
-    private static final int REQUEST_CODE_NEW_ACCOUNT = 12346;
+    private static final int REQUEST_CODE_NEW_USER_ACCOUNT = 12346;
+    private static final int REQUEST_CODE_NEW_ORGANIZATION = 12347;
+    private static final int REQUEST_CODE_NEW_ORGANIZATION_ACCOUNT = 12348;
 
     @BindView(R.id.drawer_layout_main)
     DrawerLayout drawerLayout;
@@ -93,6 +94,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private List<Organization> organizations;
 
     private Account selectedAccount;
+    private Organization selectedOrganization;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +173,13 @@ public class MainActivity extends BaseActivity implements MainView {
                         selectAccount(selectedAccount);
                     }
                     break;
-                case REQUEST_CODE_NEW_ACCOUNT:
+                case REQUEST_CODE_NEW_ORGANIZATION_ACCOUNT:
+                    if (selectedOrganization != null) {
+                        selectOrganization(selectedOrganization);
+                    }
+                    break;
+                case REQUEST_CODE_NEW_USER_ACCOUNT:
+                case REQUEST_CODE_NEW_ORGANIZATION:
                     loadMainData();
                     break;
             }
@@ -289,6 +297,10 @@ public class MainActivity extends BaseActivity implements MainView {
                         tvEmptyViewNavMenuRight.setVisibility(View.GONE);
                         rvDrawer.setVisibility(View.VISIBLE);
 
+                        if (!organizations.isEmpty()) {
+                            selectOrganization(organizations.get(0));
+                        }
+
                         rvDrawer.setAdapter(rvOrganizationsDrawerAdapter);
 
                         drawerLayout.setDrawerLockMode(
@@ -299,7 +311,7 @@ public class MainActivity extends BaseActivity implements MainView {
                         rvDrawer.setVisibility(View.GONE);
                         tvEmptyViewNavMenuRight.setVisibility(View.VISIBLE);
                     }
-                    fabNewOperation.setVisibility(View.GONE);
+                    fabNewOperation.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.ll_action_nav_profile:
@@ -336,11 +348,14 @@ public class MainActivity extends BaseActivity implements MainView {
                     case AccountsFragment.TAG:
                         startActivityForResult(
                                 new Intent(this, NewAccountActivity.class),
-                                REQUEST_CODE_NEW_ACCOUNT
+                                REQUEST_CODE_NEW_USER_ACCOUNT
                         );
                         break;
                     case OrganizationsFragment.TAG:
-
+                        startActivityForResult(
+                                new Intent(this, NewOrganizationActivity.class),
+                                REQUEST_CODE_NEW_ORGANIZATION
+                        );
                         break;
                 }
                 break;
@@ -353,12 +368,18 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @OnClick(R.id.fab_new_operation)
     public void onFabClick() {
-        Intent intent = new Intent(this, NewOperationActivity.class);
-        intent.putExtra(NewOperationActivity.INTENT_KEY_ACCOUNT_ID, selectedAccount.getId());
-        startActivityForResult(
-                intent,
-                REQUEST_CODE_NEW_OPERATION
-        );
+        if (lastFragmentTag.equals(AccountsFragment.TAG)) {
+            Intent intent = new Intent(this, NewOperationActivity.class);
+            intent.putExtra(NewOperationActivity.INTENT_KEY_ACCOUNT_ID, selectedAccount.getId());
+            startActivityForResult(intent, REQUEST_CODE_NEW_OPERATION);
+        } else if (lastFragmentTag.equals(OrganizationsFragment.TAG)) {
+            Intent intent = new Intent(this, NewAccountActivity.class);
+            intent.putExtra(
+                    NewAccountActivity.INTENT_KEY_ORGANIZATION_ID,
+                    selectedOrganization.getId()
+            );
+            startActivityForResult(intent, REQUEST_CODE_NEW_ORGANIZATION_ACCOUNT);
+        }
     }
 
     @Override
@@ -387,7 +408,9 @@ public class MainActivity extends BaseActivity implements MainView {
             if (rvOrganizationsDrawerAdapter == null) {
                 rvOrganizationsDrawerAdapter = new OrganizationsDrawerAdapter(organizations);
                 rvOrganizationsDrawerAdapter.setOnItemClickListener(position -> {
-                    Toast.makeText(this, "selected acc = " + organizations.get(position), Toast.LENGTH_SHORT).show();
+                    if (!organizations.isEmpty()) {
+                        selectOrganization(organizations.get(position));
+                    }
                 });
             } else {
                 rvOrganizationsDrawerAdapter.updateOrganizations(organizations);
@@ -444,6 +467,16 @@ public class MainActivity extends BaseActivity implements MainView {
             selectedAccount = account;
 
             accountsFragment.switchAccount(account.getId());
+
+            drawerLayout.closeDrawer(GravityCompat.END);
+        }
+    }
+
+    private void selectOrganization(Organization organization) {
+        if (lastFragmentTag.equals(OrganizationsFragment.TAG) && organizationsFragment != null) {
+            selectedOrganization = organization;
+
+            organizationsFragment.switchOrganization(organization.getId());
 
             drawerLayout.closeDrawer(GravityCompat.END);
         }

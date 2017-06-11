@@ -9,11 +9,23 @@
     tools:ignore="MissingPrefix">
 
     <TextView
+        android:id="@+id/tv_account_description"
+        fontPath="fonts/Roboto-Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:text="" />
+
+    <TextView
         android:id="@+id/tv_account_balance"
         fontPath="fonts/Roboto-Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_padding_medium"
         android:background="@drawable/tv_balance_bg_positive"
         android:paddingBottom="@dimen/margin_padding_small"
         android:paddingEnd="@dimen/margin_padding_medium"

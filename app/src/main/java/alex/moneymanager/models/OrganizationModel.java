@@ -2,8 +2,10 @@ package alex.moneymanager.models;
 
 import java.util.List;
 
+import alex.moneymanager.api.response.OrganizationResponse;
 import alex.moneymanager.api.response.OrganizationsResponse;
 import alex.moneymanager.entities.db.Organization;
+import alex.moneymanager.entities.network.NetworkOrganization;
 import io.reactivex.Observable;
 import retrofit2.Response;
 
@@ -16,5 +18,11 @@ public interface OrganizationModel extends BaseModel {
     void saveOrganizationDb(Organization organization);
 
     Observable<List<Organization>> userOrganizationsDb();
+
+    Observable<Response<OrganizationResponse>> organizationByIdApi(int organizationId);
+
+    Observable<Organization> organizationByIdDb(int organizationId);
+
+    Observable<Response<OrganizationResponse>> newOrganization(NetworkOrganization organization);
 
 }

@@ -17,4 +17,9 @@ public class DbFields {
      * Operations
      */
     public static final String OPERATION_ID = "id";
+
+    /**
+     * Organizations
+     */
+    public static final String ORGANIZATION_ID = "id";
 }

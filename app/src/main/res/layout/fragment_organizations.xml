@@ -5,11 +5,132 @@
     android:layout_height="match_parent"
     android:background="@color/bgMain"
     android:orientation="vertical"
+    android:padding="@dimen/margin_padding_medium"
     tools:ignore="MissingPrefix">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/ll_empty_view_organizations"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="organizations" />
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            fontPath="fonts/Roboto-Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="У Вас ще не має груп"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_add_organization"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/margin_padding_medium"
+            android:layout_marginTop="@dimen/margin_padding_medium"
+            android:paddingEnd="@dimen/margin_padding_medium"
+            android:paddingStart="@dimen/margin_padding_medium"
+            android:text="Додати групу" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_organization_name"
+        fontPath="fonts/Roboto-Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="14sp"
+        tools:text="Назва: ff4sf" />
+
+    <TextView
+        android:id="@+id/tv_organization_type"
+        fontPath="fonts/Roboto-Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_small"
+        android:gravity="start"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="14sp"
+        tools:text="Тип: організація" />
+
+    <TextView
+        android:id="@+id/tv_organization_date"
+        fontPath="fonts/Roboto-Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_small"
+        android:gravity="start"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="14sp"
+        tools:text="Створена: 12.07.17" />
+
+    <TextView
+        android:id="@+id/tv_organization_status"
+        fontPath="fonts/Roboto-Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_small"
+        android:gravity="start"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="14sp"
+        tools:text="Статус: Заблоковано" />
+
+    <TextView
+        android:id="@+id/tv_organization_description"
+        fontPath="fonts/Roboto-Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_small"
+        android:gravity="start"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="14sp"
+        tools:text="Опис: sladkl kdjaskjd as\n ajsdhkjasd" />
+
+    <Button
+        android:id="@+id/btn_organization_members"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/margin_padding_medium"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="@dimen/margin_padding_medium"
+        android:paddingEnd="@dimen/margin_padding_medium"
+        android:paddingStart="@dimen/margin_padding_medium"
+        android:text="Участники групи" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            fontPath="fonts/Roboto-Black.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:gravity="start"
+            android:text="Аккаунти:"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="14sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_accounts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingBottom="@dimen/margin_padding_medium"
+            tools:listitem="@layout/list_item_organization1" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import alex.moneymanager.api.ApiClient;
 import alex.moneymanager.api.request.NewUserAccountRequest;
 import alex.moneymanager.api.response.AccountResponse;
 import alex.moneymanager.api.response.AccountsResponse;
+import alex.moneymanager.api.response.SimpleRespone;
 import alex.moneymanager.db.DbFields;
 import alex.moneymanager.db.RealmManager;
 import alex.moneymanager.entities.db.Account;
@@ -80,5 +81,38 @@ public class AccountModelImpl implements AccountModel {
         Account unManagedAccount = realmManager.getRealm().copyFromRealm(account);
 
         return Observable.just(unManagedAccount);
+    }
+
+    @Override
+    public Observable<Response<AccountResponse>> newOrganizationAccountApi(int organizationId,
+//    public Observable<Response<Account>> newOrganizationAccountApi(int organizationId,
+                                                                           NetworkAccount account) {
+        return apiClient.getApiService().newOrganizationAccount(
+                preferenceUtil.getApiKey(),
+                organizationId,
+                new NewUserAccountRequest(account)
+        );
+    }
+
+    @Override
+    public Observable<Response<AccountResponse>> editOrganizationAccountApi(int organizationId,
+                                                                            int accountId,
+                                                                            NetworkAccount account) {
+        return apiClient.getApiService().editOrganizationAccount(
+                preferenceUtil.getApiKey(),
+                organizationId,
+                accountId,
+                new NewUserAccountRequest(account)
+        );
+    }
+
+    @Override
+    public Observable<Response<SimpleRespone>> deleteOrganizationAccount(int organizationId,
+                                                                         int accountId) {
+        return apiClient.getApiService().deleteOrganizationAccount(
+                preferenceUtil.getApiKey(),
+                organizationId,
+                accountId
+        );
     }
 }
