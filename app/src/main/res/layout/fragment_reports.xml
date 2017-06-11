@@ -1,12 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bgMain"
-    android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_padding_medium">
 
+        <TextView
+            fontPath="fonts/Roboto-Bold.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_padding_medium"
+            android:layout_marginStart="@dimen/margin_padding_medium"
+            android:gravity="center"
+            android:text="Формування звіту"
+            android:textColor="#000"
+            android:textSize="20sp" />
 
-</LinearLayout>
+        <TextView
+            fontPath="fonts/Roboto-Medium.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_padding_medium"
+            android:layout_marginStart="@dimen/margin_padding_medium"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:text="Оберіть один або декілька критеріїв для формування звіту та натисність кнопку &quot;Сформувати&quot;"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_padding_medium"
+            android:layout_marginStart="@dimen/margin_padding_medium"
+            android:layout_marginTop="@dimen/margin_padding_big"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:text="Ви бажаєте зробити вибірку за власними аккаунтами чи за аккаунтами групи?"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <RadioGroup
+            android:id="@+id/rg_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_type_accounts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_padding_medium"
+                android:text="Власні аккаунти"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rb_type_organizations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_padding_medium"
+                android:text="Аккаунти групи"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="14sp" />
+
+        </RadioGroup>
+
+        <ViewFlipper
+            android:id="@+id/vf_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_accounts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_organizations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </ViewFlipper>
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_padding_medium"
+            android:layout_marginStart="@dimen/margin_padding_medium"
+            android:layout_marginTop="@dimen/margin_padding_big"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:text="Оберіть тип операцій"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <RadioGroup
+            android:id="@+id/rg_operation_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_operation_type_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_padding_medium"
+                android:text="Усі"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rb_operation_type_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_padding_medium"
+                android:layout_marginStart="@dimen/margin_padding_medium"
+                android:text="Надходження"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rb_operation_type_expense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_padding_medium"
+                android:text="Витрати"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="14sp" />
+
+        </RadioGroup>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_padding_medium"
+            android:layout_marginStart="@dimen/margin_padding_medium"
+            android:layout_marginTop="@dimen/margin_padding_medium"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:text="або категорії"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_padding_medium"
+            android:layout_marginStart="@dimen/margin_padding_medium"
+            android:layout_marginTop="@dimen/margin_padding_medium"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:text="Вкажіть дату"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!--<TextView-->
+                <!--fontPath="fonts/Roboto-Regular.ttf"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginEnd="@dimen/margin_padding_medium"-->
+                <!--android:layout_marginStart="@dimen/margin_padding_medium"-->
+                <!--android:layout_marginTop="@dimen/margin_padding_medium"-->
+                <!--android:gravity="center"-->
+                <!--android:lineSpacingExtra="4dp"-->
+                <!--android:text="Від"-->
+                <!--android:textColor="#000"-->
+                <!--android:textSize="14sp" />-->
+
+                <EditText
+                    android:id="@+id/et_from_date"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_small"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:hint="Від"
+                    android:lines="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!--<TextView-->
+                <!--fontPath="fonts/Roboto-Regular.ttf"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginEnd="@dimen/margin_padding_medium"-->
+                <!--android:layout_marginStart="@dimen/margin_padding_medium"-->
+                <!--android:layout_marginTop="@dimen/margin_padding_medium"-->
+                <!--android:gravity="center"-->
+                <!--android:lineSpacingExtra="4dp"-->
+                <!--android:text="До"-->
+                <!--android:textColor="#000"-->
+                <!--android:textSize="14sp" />-->
+
+                <EditText
+                    android:id="@+id/et_to_date"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_small"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:hint="До"
+                    android:lines="1" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_report"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/margin_padding_medium"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:paddingEnd="@dimen/margin_padding_medium"
+            android:paddingStart="@dimen/margin_padding_medium"
+            android:text="Сформувати" />
+
+    </LinearLayout>
+
+</ScrollView>

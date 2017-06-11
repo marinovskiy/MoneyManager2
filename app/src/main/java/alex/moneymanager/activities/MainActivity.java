@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -35,6 +34,7 @@ import alex.moneymanager.fragments.AccountsFragment;
 import alex.moneymanager.fragments.HomeFragment;
 import alex.moneymanager.fragments.OrganizationsFragment;
 import alex.moneymanager.fragments.ProfileFragment;
+import alex.moneymanager.fragments.ReportsFragment;
 import alex.moneymanager.presenters.MainPresenter;
 import alex.moneymanager.utils.PreferenceUtil;
 import alex.moneymanager.utils.SystemUtils;
@@ -92,6 +92,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private AccountsFragment accountsFragment;
     private OrganizationsFragment organizationsFragment;
     private ProfileFragment profileFragment;
+    private ReportsFragment reportsFragment;
 
     private List<String> accountsTest = Arrays.asList("By day", "By month", "By year");
 
@@ -151,6 +152,7 @@ public class MainActivity extends BaseActivity implements MainView {
         accountsFragment = AccountsFragment.newInstance();
         organizationsFragment = OrganizationsFragment.newInstance();
         profileFragment = ProfileFragment.newInstance();
+        reportsFragment = ReportsFragment.newInstance();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -211,6 +213,7 @@ public class MainActivity extends BaseActivity implements MainView {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         menuItemEdit = menu.findItem(R.id.action_edit);
+        menuItemEdit.setVisible(false);
 
         return true;
     }
@@ -235,8 +238,8 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @OnClick({R.id.ll_action_nav_home, R.id.ll_action_nav_accounts, R.id.ll_action_nav_organizations,
-            R.id.ll_action_nav_profile, R.id.ll_action_nav_settings, R.id.ll_action_nav_logout,
-            R.id.btn_add_nav_menu_right})
+            R.id.ll_action_nav_profile, R.id.ll_action_nav_reports, R.id.ll_action_nav_settings,
+            R.id.ll_action_nav_logout, R.id.btn_add_nav_menu_right})
     public void onDrawerViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_action_nav_home:
@@ -357,6 +360,29 @@ public class MainActivity extends BaseActivity implements MainView {
                     }
 
                     lastFragmentTag = ProfileFragment.TAG;
+
+//                    drawerLayout.setDrawerLockMode(
+//                            DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+//                            findViewById(R.id.nav_menu_right)
+//                    );
+                    fabNewOperation.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.ll_action_nav_reports:
+                if (!ReportsFragment.TAG.equals(lastFragmentTag)) {
+                    if (getSupportFragmentManager().findFragmentByTag(ReportsFragment.TAG) == null) {
+                        getSupportFragmentManager().beginTransaction()
+                                .hide(getSupportFragmentManager().findFragmentByTag(lastFragmentTag))
+                                .add(R.id.fl_container_main, reportsFragment, ReportsFragment.TAG)
+                                .commit();
+                    } else {
+                        getSupportFragmentManager().beginTransaction()
+                                .hide(getSupportFragmentManager().findFragmentByTag(lastFragmentTag))
+                                .show(reportsFragment)
+                                .commit();
+                    }
+
+                    lastFragmentTag = ReportsFragment.TAG;
 
 //                    drawerLayout.setDrawerLockMode(
 //                            DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
@@ -520,28 +546,24 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     public void updateMenuByFragment(String fragmentTag) {
-        switch (fragmentTag) {
-            case AccountsFragment.TAG:
-                menuItemEdit.setVisible(false);
-//                tvToolbarTitle.setText("Your accounts");
-//
-//                spinnerPeriod.setVisibility(View.GONE);
-//                tvToolbarTitle.setVisibility(View.VISIBLE);
-                break;
-            case OrganizationsFragment.TAG:
-                menuItemEdit.setVisible(true);
-//                tvToolbarTitle.setText("Your organizations");
-//
-//                spinnerPeriod.setVisibility(View.GONE);
-//                tvToolbarTitle.setVisibility(View.VISIBLE);
-                break;
-            case ProfileFragment.TAG:
-                menuItemEdit.setVisible(false);
-//                tvToolbarTitle.setText("Your profile");
-//
-//                spinnerPeriod.setVisibility(View.GONE);
-//                tvToolbarTitle.setVisibility(View.VISIBLE);
-                break;
+        if (menuItemEdit != null) {
+            switch (fragmentTag) {
+                case HomeFragment.TAG:
+                    menuItemEdit.setVisible(false);
+                    break;
+                case AccountsFragment.TAG:
+                    menuItemEdit.setVisible(false);
+                    break;
+                case OrganizationsFragment.TAG:
+                    menuItemEdit.setVisible(true);
+                    break;
+                case ProfileFragment.TAG:
+                    menuItemEdit.setVisible(false);
+                    break;
+                case ReportsFragment.TAG:
+                    menuItemEdit.setVisible(false);
+                    break;
+            }
         }
     }
 }
