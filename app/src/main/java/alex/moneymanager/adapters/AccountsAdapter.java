@@ -1,5 +1,6 @@
 package alex.moneymanager.adapters;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,9 +84,9 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
                     String.format("%s %s", account.getBalance(), account.getCurrency().getSymbol())
             );
             if (account.getBalance() < 0) {
-                tvAccountBalance.setBackgroundResource(R.drawable.tv_balance_bg_negative);
+                tvAccountBalance.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.colorNegative));
             } else {
-                tvAccountBalance.setBackgroundResource(R.drawable.tv_balance_bg_positive);
+                tvAccountBalance.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.colorPositive));
             }
 
 //            if (account.getOperations() != null && !account.getOperations().isEmpty()) {

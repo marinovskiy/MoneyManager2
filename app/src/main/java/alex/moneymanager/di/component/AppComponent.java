@@ -3,11 +3,13 @@ package alex.moneymanager.di.component;
 import javax.inject.Singleton;
 
 import alex.moneymanager.activities.AccountDetailsActivity;
+import alex.moneymanager.activities.AddMembersActivity;
 import alex.moneymanager.activities.AuthActivity;
 import alex.moneymanager.activities.MainActivity;
 import alex.moneymanager.activities.NewAccountActivity;
 import alex.moneymanager.activities.NewOperationActivity;
 import alex.moneymanager.activities.NewOrganizationActivity;
+import alex.moneymanager.activities.OrganizationMembersActivity;
 import alex.moneymanager.activities.SplashActivity;
 import alex.moneymanager.application.MoneyManagerApplication;
 import alex.moneymanager.di.module.AppModule;
@@ -57,6 +59,10 @@ public interface AppComponent {
     void inject(NewOrganizationActivity activity);
 
     void inject(AccountDetailsActivity activity);
+
+    void inject(OrganizationMembersActivity activity);
+
+    void inject(AddMembersActivity activity);
 
     // fragments
     void inject(WelcomeFragment fragment);

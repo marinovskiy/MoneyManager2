@@ -6,6 +6,7 @@ import alex.moneymanager.api.ApiClient;
 import alex.moneymanager.api.request.NewOrganizationRequest;
 import alex.moneymanager.api.response.OrganizationResponse;
 import alex.moneymanager.api.response.OrganizationsResponse;
+import alex.moneymanager.api.response.SimpleRespone;
 import alex.moneymanager.db.DbFields;
 import alex.moneymanager.db.RealmManager;
 import alex.moneymanager.entities.db.Organization;
@@ -79,6 +80,24 @@ public class OrganizationModelImpl implements OrganizationModel {
         return apiClient.getApiService().newOrganization(
                 preferenceUtil.getApiKey(),
                 new NewOrganizationRequest(organization)
+        );
+    }
+
+    @Override
+    public Observable<Response<SimpleRespone>> addMember(int organizationId, int userId) {
+        return apiClient.getApiService().addMember(
+                preferenceUtil.getApiKey(),
+                organizationId,
+                userId
+        );
+    }
+
+    @Override
+    public Observable<Response<SimpleRespone>> removeMember(int organizationId, int userId) {
+        return apiClient.getApiService().removeMember(
+                preferenceUtil.getApiKey(),
+                organizationId,
+                userId
         );
     }
 }

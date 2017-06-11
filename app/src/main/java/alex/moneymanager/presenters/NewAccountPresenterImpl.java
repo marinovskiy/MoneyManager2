@@ -3,8 +3,10 @@ package alex.moneymanager.presenters;
 import java.util.List;
 
 import alex.moneymanager.activities.NewAccountActivity;
+import alex.moneymanager.activities.NewOperationActivity;
 import alex.moneymanager.entities.db.Currency;
 import alex.moneymanager.entities.network.NetworkAccount;
+import alex.moneymanager.fragments.OrganizationsFragment;
 import alex.moneymanager.models.AccountModel;
 import alex.moneymanager.models.CurrencyModel;
 import alex.moneymanager.utils.SystemUtils;
@@ -126,6 +128,33 @@ public class NewAccountPresenterImpl extends AbstractPresenter<NewAccountView>
     }
 
     @Override
+    public void loadAccountDb(int accountId) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
+
+        addSubscription(
+                accountModel.accountDb(accountId)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(account -> {
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().setAccount(account);
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        NewAccountActivity.ERROR_CASE_LOAD_ACCOUNT
+                                );
+                            }
+                        })
+        );
+    }
+
+    @Override
     public void addNewOrganizationAccount(int organizationId, NetworkAccount account) {
         if (isViewAttached()) {
             getView().showProgressDialog();
@@ -157,6 +186,39 @@ public class NewAccountPresenterImpl extends AbstractPresenter<NewAccountView>
                                 getView().dismissProgressDialog();
                                 getView().showErrorDialog(
                                         NewAccountActivity.ERROR_CASE_NEW_ORGANIZATION_ACCOUNT
+                                );
+                            }
+                        })
+        );
+    }
+
+    @Override
+    public void editOrganizationAccount(int accountId, int operationId, NetworkAccount account) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
+
+        addSubscription(
+                accountModel.editOrganizationAccountApi(accountId, operationId, account)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (isViewAttached()) {
+                                if (response.isSuccessful()) {
+                                    getView().accountAddedSuccess();
+                                } else {
+                                    getView().dismissProgressDialog();
+                                    getView().showErrorDialog(
+                                            OrganizationsFragment.ERROR_CASE_EDIT_ACCOUNT
+                                    );
+                                }
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        OrganizationsFragment.ERROR_CASE_EDIT_ACCOUNT
                                 );
                             }
                         })

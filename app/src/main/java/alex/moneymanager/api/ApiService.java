@@ -190,7 +190,7 @@ public interface ApiService {
     /**
      * Users requests
      */
-    @PUT("users/search")
+    @GET("users/search")
     Observable<Response<UsersResponse>> usersSearch(
             @Header("X-AUTH-TOKEN") String apiKey,
             @Query("email") String email

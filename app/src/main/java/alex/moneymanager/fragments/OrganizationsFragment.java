@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import alex.moneymanager.R;
 import alex.moneymanager.activities.MainActivity;
 import alex.moneymanager.activities.NewAccountActivity;
+import alex.moneymanager.activities.OrganizationMembersActivity;
 import alex.moneymanager.adapters.AccountsAdapter;
 import alex.moneymanager.application.MoneyManagerApplication;
 import alex.moneymanager.dialogs.ErrorDialogFragment;
@@ -132,8 +133,15 @@ public class OrganizationsFragment extends BaseFragment implements Organizations
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_add_organization:
+                //TODO
                 break;
             case R.id.btn_organization_members:
+                Intent intent = new Intent(getActivity(), OrganizationMembersActivity.class);
+                intent.putExtra(
+                        OrganizationMembersActivity.INTENT_KEY_ORGANIZATION_ID,
+                        lastOrganizationId
+                );
+                startActivity(intent);
                 break;
         }
     }
@@ -154,6 +162,7 @@ public class OrganizationsFragment extends BaseFragment implements Organizations
                 if (rvAccountsAdapter == null) {
                     rvAccountsAdapter = new AccountsAdapter(this.organization.getAccounts());
                     rvAccountsAdapter.setOnItemClickListener((view, position) -> {
+                        //TODO details
                         if (this.organization.getCreator().getId().equals(preferenceUtil.getUser().getId())
                                 && this.organization.getAccounts() != null) {
                             showAccountPopupMenu(
@@ -257,7 +266,7 @@ public class OrganizationsFragment extends BaseFragment implements Organizations
                     public void onPositiveButtonClick() {
                         if (systemUtils.isConnected()) {
                             if (lastAccountId != null) {
-//                                presenter.deleteAccount(lastOrganizationId, lastAccountId);
+                                presenter.deleteAccount(lastOrganizationId, lastAccountId);
                             }
                         } else {
                             Toast.makeText(getContext(), R.string.msg_error_no_internet, Toast.LENGTH_SHORT).show();

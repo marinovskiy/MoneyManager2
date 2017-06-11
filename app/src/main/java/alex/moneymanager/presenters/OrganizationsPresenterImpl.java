@@ -1,7 +1,9 @@
 package alex.moneymanager.presenters;
 
 import alex.moneymanager.entities.db.Organization;
+import alex.moneymanager.entities.network.NetworkAccount;
 import alex.moneymanager.fragments.OrganizationsFragment;
+import alex.moneymanager.models.AccountModel;
 import alex.moneymanager.models.OrganizationModel;
 import alex.moneymanager.utils.SystemUtils;
 import alex.moneymanager.views.OrganizationsView;
@@ -13,11 +15,13 @@ public class OrganizationsPresenterImpl extends AbstractPresenter<OrganizationsV
 
     private SystemUtils systemUtils;
     private OrganizationModel organizationModel;
+    private AccountModel accountModel;
 
-    public OrganizationsPresenterImpl(SystemUtils systemUtils,
-                                      OrganizationModel organizationModel) {
+    public OrganizationsPresenterImpl(SystemUtils systemUtils, OrganizationModel organizationModel,
+                                      AccountModel accountModel) {
         this.systemUtils = systemUtils;
         this.organizationModel = organizationModel;
+        this.accountModel = accountModel;
     }
 
     @Override
@@ -81,5 +85,37 @@ public class OrganizationsPresenterImpl extends AbstractPresenter<OrganizationsV
         }
     }
 
+    @Override
+    public void deleteAccount(int organizationId, int accountId) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
 
+        addSubscription(
+                accountModel.deleteOrganizationAccount(organizationId, accountId)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+
+                                if (response.isSuccessful()) {
+                                    loadOrganization(organizationId);
+                                }
+                            } else {
+                                getView().showErrorDialog(
+                                        OrganizationsFragment.ERROR_CASE_DELETE_ACCOUNT
+                                );
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        OrganizationsFragment.ERROR_CASE_DELETE_ACCOUNT
+                                );
+                            }
+                        })
+        );
+    }
 }

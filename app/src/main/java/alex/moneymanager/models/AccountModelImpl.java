@@ -72,7 +72,7 @@ public class AccountModelImpl implements AccountModel {
     }
 
     @Override
-    public Observable<Account> userAccountDb(int accountId) {
+    public Observable<Account> accountDb(int accountId) {
         Account account = realmManager.getRealm()
                 .where(Account.class)
                 .equalTo(DbFields.ACCOUNT_ID, accountId)

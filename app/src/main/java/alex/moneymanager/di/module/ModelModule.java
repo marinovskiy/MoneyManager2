@@ -16,6 +16,8 @@ import alex.moneymanager.models.OperationModel;
 import alex.moneymanager.models.OperationModelImpl;
 import alex.moneymanager.models.OrganizationModel;
 import alex.moneymanager.models.OrganizationModelImpl;
+import alex.moneymanager.models.UserModel;
+import alex.moneymanager.models.UserModelImpl;
 import alex.moneymanager.utils.PreferenceUtil;
 import dagger.Module;
 import dagger.Provides;
@@ -59,5 +61,10 @@ public class ModelModule {
     OperationModel provideOperationModel(ApiClient apiClient, RealmManager realmManager,
                                          PreferenceUtil preferenceUtil) {
         return new OperationModelImpl(apiClient, realmManager, preferenceUtil);
+    }
+
+    @Provides
+    UserModel provideUserModel(ApiClient apiClient, PreferenceUtil preferenceUtil) {
+        return new UserModelImpl(apiClient, preferenceUtil);
     }
 }

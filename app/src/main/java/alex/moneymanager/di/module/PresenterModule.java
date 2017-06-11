@@ -7,6 +7,7 @@ import alex.moneymanager.models.CurrencyModel;
 import alex.moneymanager.models.InitialDataModel;
 import alex.moneymanager.models.OperationModel;
 import alex.moneymanager.models.OrganizationModel;
+import alex.moneymanager.models.UserModel;
 import alex.moneymanager.presenters.AccountsPresenter;
 import alex.moneymanager.presenters.AccountsPresenterImpl;
 import alex.moneymanager.presenters.LoginPresenter;
@@ -19,6 +20,10 @@ import alex.moneymanager.presenters.NewOperationPresenter;
 import alex.moneymanager.presenters.NewOperationPresenterImpl;
 import alex.moneymanager.presenters.NewOrganizationPresenter;
 import alex.moneymanager.presenters.NewOrganizationPresenterImpl;
+import alex.moneymanager.presenters.OrganizationAddMemberPresenter;
+import alex.moneymanager.presenters.OrganizationAddMemberPresenterImpl;
+import alex.moneymanager.presenters.OrganizationMembersPresenter;
+import alex.moneymanager.presenters.OrganizationMembersPresenterImpl;
 import alex.moneymanager.presenters.OrganizationsPresenter;
 import alex.moneymanager.presenters.OrganizationsPresenterImpl;
 import alex.moneymanager.presenters.RegistrationPresenter;
@@ -85,8 +90,9 @@ public class PresenterModule {
 
     @Provides
     OrganizationsPresenter provideOrganizationsPresenter(SystemUtils systemUtils,
-                                                         OrganizationModel organizationModel) {
-        return new OrganizationsPresenterImpl(systemUtils, organizationModel);
+                                                         OrganizationModel organizationModel,
+                                                         AccountModel accountModel) {
+        return new OrganizationsPresenterImpl(systemUtils, organizationModel, accountModel);
     }
 
     @Provides
@@ -94,4 +100,14 @@ public class PresenterModule {
         return new NewOrganizationPresenterImpl(organizationModel);
     }
 
+    @Provides
+    OrganizationMembersPresenter provideOrganizationMembersPresenter(OrganizationModel organizationModel) {
+        return new OrganizationMembersPresenterImpl(organizationModel);
+    }
+
+    @Provides
+    OrganizationAddMemberPresenter provideOrganizationAddMemberPresenter(UserModel userModel,
+                                                                         OrganizationModel organizationModel) {
+        return new OrganizationAddMemberPresenterImpl(userModel, organizationModel);
+    }
 }

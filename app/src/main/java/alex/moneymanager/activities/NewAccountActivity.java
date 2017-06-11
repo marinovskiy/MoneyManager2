@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import alex.moneymanager.R;
 import alex.moneymanager.application.MoneyManagerApplication;
 import alex.moneymanager.dialogs.ErrorDialogFragment;
+import alex.moneymanager.entities.db.Account;
 import alex.moneymanager.entities.db.Currency;
 import alex.moneymanager.entities.network.NetworkAccount;
 import alex.moneymanager.presenters.NewAccountPresenter;
@@ -38,6 +39,8 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
     public static final int ERROR_CASE_CURRENCIES = 0;
     public static final int ERROR_CASE_NEW_USER_ACCOUNT = 1;
     public static final int ERROR_CASE_NEW_ORGANIZATION_ACCOUNT = 2;
+    public static final int ERROR_CASE_LOAD_ACCOUNT = 3;
+    public static final int ERROR_CASE_EDIT_ORGANIZATION_ACCOUNT = 4;
 
     @BindView(R.id.toolbar_new_account)
     Toolbar toolbar;
@@ -147,7 +150,7 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
                         if (organizationId == 0) {
 //                            edit();
                         } else {
-//                            edit();
+                            editOrganizationAccount();
                         }
                         break;
                 }
@@ -197,6 +200,10 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
                 public void onNothingSelected(AdapterView<?> arg0) {
                 }
             });
+
+            if (accountId != 0) {
+                presenter.loadAccountDb(accountId);
+            }
         }
     }
 
@@ -204,6 +211,20 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
     public void accountAddedSuccess() {
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void setAccount(Account account) {
+        etName.setText(account.getName());
+        etDescription.setText(account.getDescription());
+
+        int index = currencies.indexOf(
+                Stream.of(currencies)
+                        .filter(value -> value.getId() == account.getCurrency().getId())
+                        .findFirst()
+                        .get()
+        );
+        spinnerCurrency.setSelection(index);
     }
 
     @Override
@@ -294,6 +315,26 @@ public class NewAccountActivity extends BaseActivity implements NewAccountView {
             if (isValid()) {
                 presenter.addNewOrganizationAccount(
                         organizationId,
+                        new NetworkAccount(
+                                getName(),
+                                getDescription(),
+                                getCurrency()
+                        )
+                );
+            } else {
+                Toast.makeText(this, validationErrorMessage, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, R.string.msg_error_no_internet, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void editOrganizationAccount() {
+        if (systemUtils.isConnected()) {
+            if (isValid()) {
+                presenter.editOrganizationAccount(
+                        organizationId,
+                        accountId,
                         new NetworkAccount(
                                 getName(),
                                 getDescription(),

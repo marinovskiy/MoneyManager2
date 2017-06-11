@@ -64,7 +64,7 @@ public class AccountsPresenterImpl extends AbstractPresenter<AccountsView>
             );
         } else {
             addSubscription(
-                    accountModel.userAccountDb(accountId)
+                    accountModel.accountDb(accountId)
                             .subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(account -> {

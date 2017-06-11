@@ -182,6 +182,11 @@ public class MainActivity extends BaseActivity implements MainView {
                 case REQUEST_CODE_NEW_ORGANIZATION:
                     loadMainData();
                     break;
+                case AccountsFragment.REQUEST_CODE_EDIT_OPERATION:
+                    if (lastFragmentTag.equals(AccountsFragment.TAG) && accountsFragment != null) {
+                        accountsFragment.onActivityResult(requestCode, resultCode, data);
+                    }
+                    break;
             }
         }
     }

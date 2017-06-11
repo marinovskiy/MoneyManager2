@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="alex.moneymanager">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".application.MoneyManagerApplication"
@@ -40,6 +40,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.OrganizationMembersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.AddMembersActivity"
             android:screenOrientation="portrait" />
     </application>
 

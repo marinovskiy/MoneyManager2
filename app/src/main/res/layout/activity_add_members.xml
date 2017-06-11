@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_add_members"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:elevation="4dp"
+        app:title="members"
+        app:titleTextColor="@color/colorAccent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_padding_medium">
+
+            <TextView
+                fontPath="fonts/Roboto-Bold.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_padding_medium"
+                android:layout_marginStart="@dimen/margin_padding_medium"
+                android:gravity="center"
+                android:text="Пошук нових учасників для групи"
+                android:textColor="#000"
+                android:textSize="20sp" />
+
+            <TextView
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_padding_medium"
+                android:layout_marginStart="@dimen/margin_padding_medium"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:gravity="center"
+                android:lineSpacingExtra="4dp"
+                android:text="Введіть електронну пошту користувача та натисніть кнопку &quot;Пошук&quot;"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_email"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_medium"
+                android:hint="Електронна пошта"
+                android:inputType="textEmailAddress"
+                android:lines="1" />
+
+            <Button
+                android:id="@+id/btn_search"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/margin_padding_medium"
+                android:layout_marginEnd="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:paddingEnd="@dimen/margin_padding_medium"
+                android:paddingStart="@dimen/margin_padding_medium"
+                android:text="Пошук" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/margin_padding_medium"
+                android:paddingTop="@dimen/margin_padding_medium"
+                tools:listitem="@layout/list_item_member" />
+
+            <Button
+                android:id="@+id/btn_add_member"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/margin_padding_medium"
+                android:layout_marginEnd="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="@dimen/margin_padding_medium"
+                android:paddingEnd="@dimen/margin_padding_medium"
+                android:paddingStart="@dimen/margin_padding_medium"
+                android:text="Додати" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

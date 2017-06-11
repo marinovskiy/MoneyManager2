@@ -98,6 +98,14 @@ public class Organization extends RealmObject {
         this.creator = creator;
     }
 
+    public RealmList<User> getMembers() {
+        return members;
+    }
+
+    public void setMembers(RealmList<User> members) {
+        this.members = members;
+    }
+
     public RealmList<Account> getAccounts() {
         return accounts;
     }
