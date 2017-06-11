@@ -8,6 +8,8 @@ import alex.moneymanager.models.InitialDataModel;
 import alex.moneymanager.models.OperationModel;
 import alex.moneymanager.models.OrganizationModel;
 import alex.moneymanager.models.UserModel;
+import alex.moneymanager.presenters.AccountDetailsPresenter;
+import alex.moneymanager.presenters.AccountDetailsPresenterImpl;
 import alex.moneymanager.presenters.AccountsPresenter;
 import alex.moneymanager.presenters.AccountsPresenterImpl;
 import alex.moneymanager.presenters.LoginPresenter;
@@ -109,5 +111,12 @@ public class PresenterModule {
     OrganizationAddMemberPresenter provideOrganizationAddMemberPresenter(UserModel userModel,
                                                                          OrganizationModel organizationModel) {
         return new OrganizationAddMemberPresenterImpl(userModel, organizationModel);
+    }
+
+    @Provides
+    AccountDetailsPresenter provideAccountDetailsPresenter(SystemUtils systemUtils,
+                                                           AccountModel accountModel,
+                                                           OperationModel operationModel) {
+        return new AccountDetailsPresenterImpl(systemUtils, accountModel, operationModel);
     }
 }

@@ -26,6 +26,11 @@ public interface OrganizationModel extends BaseModel {
 
     Observable<Response<OrganizationResponse>> newOrganization(NetworkOrganization organization);
 
+    Observable<Response<OrganizationResponse>> editOrganization(
+            int organizationId,
+            NetworkOrganization organization
+    );
+
     Observable<Response<SimpleRespone>> addMember(int organizationId, int userId);
 
     Observable<Response<SimpleRespone>> removeMember(int organizationId, int userId);

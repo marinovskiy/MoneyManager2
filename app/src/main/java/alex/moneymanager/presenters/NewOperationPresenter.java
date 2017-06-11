@@ -13,4 +13,8 @@ public interface NewOperationPresenter extends BasePresenter<NewOperationView> {
 
     void editOperation(int accountId, int operationId, NetworkOperation operation);
 
+    void addNewOrganizationOperation(int organizationId, int accountId, NetworkOperation operation);
+
+    void editOrganizationOperation(int organizationId, int accountId, int operationId, NetworkOperation operation);
+
 }

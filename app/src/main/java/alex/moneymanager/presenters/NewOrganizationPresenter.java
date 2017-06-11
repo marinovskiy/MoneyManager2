@@ -7,8 +7,8 @@ public interface NewOrganizationPresenter extends BasePresenter<NewOrganizationV
 
     void addNewOrganization(NetworkOrganization organization);
 
-//    void loadOperationDb(int operationId);
-//
-//    void editOperation(int accountId, int operationId, NetworkOperation operation);
+    void loadOrganizationDb(int organizationId);
+
+    void editOrganization(int organizationId, NetworkOrganization organization);
 
 }

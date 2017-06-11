@@ -84,6 +84,16 @@ public class OrganizationModelImpl implements OrganizationModel {
     }
 
     @Override
+    public Observable<Response<OrganizationResponse>> editOrganization(int organizationId,
+                                                                      NetworkOrganization organization) {
+        return apiClient.getApiService().editOrganization(
+                preferenceUtil.getApiKey(),
+                organizationId,
+                new NewOrganizationRequest(organization)
+        );
+    }
+
+    @Override
     public Observable<Response<SimpleRespone>> addMember(int organizationId, int userId) {
         return apiClient.getApiService().addMember(
                 preferenceUtil.getApiKey(),

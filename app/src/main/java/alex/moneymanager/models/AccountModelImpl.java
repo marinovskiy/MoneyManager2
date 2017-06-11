@@ -84,6 +84,16 @@ public class AccountModelImpl implements AccountModel {
     }
 
     @Override
+    public Observable<Response<AccountResponse>> organizationAccountApi(int organizationId,
+                                                                        int accountId) {
+        return apiClient.getApiService().organizationAccount(
+                preferenceUtil.getApiKey(),
+                organizationId,
+                accountId
+        );
+    }
+
+    @Override
     public Observable<Response<AccountResponse>> newOrganizationAccountApi(int organizationId,
 //    public Observable<Response<Account>> newOrganizationAccountApi(int organizationId,
                                                                            NetworkAccount account) {

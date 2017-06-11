@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.annimon.stream.Stream;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,8 +35,9 @@ public class NewOrganizationActivity extends BaseActivity implements NewOrganiza
 
     public static final String INTENT_KEY_ORGANIZATION_ID = "intent_key_organization_id";
 
-    public static final int ERROR_CASE_NEW_ORGANIZATION = 0;
-    public static final int ERROR_CASE_EDIT_ORGANIZATION = 1;
+    public static final int ERROR_CASE_LOAD_ORGANIZATION = 0;
+    public static final int ERROR_CASE_NEW_ORGANIZATION = 1;
+    public static final int ERROR_CASE_EDIT_ORGANIZATION = 2;
 
     @BindView(R.id.toolbar_new_organization)
     Toolbar toolbar;
@@ -101,6 +104,10 @@ public class NewOrganizationActivity extends BaseActivity implements NewOrganiza
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+
+        if (organizationId != 0) {
+            presenter.loadOrganizationDb(organizationId);
+        }
     }
 
     @Override
@@ -131,7 +138,7 @@ public class NewOrganizationActivity extends BaseActivity implements NewOrganiza
             View.OnClickListener menuOnClickListener = v -> {
                 switch (v.getId()) {
                     case R.id.action_update:
-//                        edit();
+                        updateOrganization();
                         break;
                 }
             };
@@ -163,7 +170,16 @@ public class NewOrganizationActivity extends BaseActivity implements NewOrganiza
 
     @Override
     public void setOrganization(Organization organization) {
+        etName.setText(organization.getName());
+        etDescription.setText(organization.getDescription());
 
+        int index = organizationTypes.indexOf(
+                Stream.of(organizationTypes)
+                        .filter(value -> value.equals(organization.getType()))
+                        .findFirst()
+                        .get()
+        );
+        spinnerType.setSelection(index);
     }
 
     @Override
@@ -203,6 +219,9 @@ public class NewOrganizationActivity extends BaseActivity implements NewOrganiza
                     @Override
                     public void onNegativeButtonClick() {
                         switch (errorCase) {
+                            case ERROR_CASE_LOAD_ORGANIZATION:
+                                //TODO
+                                break;
                             case ERROR_CASE_NEW_ORGANIZATION:
                                 //TODO
                                 break;
@@ -252,22 +271,23 @@ public class NewOrganizationActivity extends BaseActivity implements NewOrganiza
     }
 
     private void updateOrganization() {
-//        if (systemUtils.isConnected()) {
-//            if (isValid()) {
-//                presenter.addNewOrganizationAccount(
-//                        organizationId,
-//                        new NetworkAccount(
-//                                getName(),
-//                                getDescription(),
-//                                getCurrency()
-//                        )
-//                );
-//            } else {
-//                Toast.makeText(this, validationErrorMessage, Toast.LENGTH_SHORT).show();
-//            }
-//        } else {
-//            Toast.makeText(this, R.string.msg_error_no_internet, Toast.LENGTH_SHORT).show();
-//        }
+        if (systemUtils.isConnected()) {
+            if (isValid()) {
+                presenter.editOrganization(
+                        organizationId,
+                        new NetworkOrganization(
+                                getName(),
+                                getDescription(),
+                                getType(),
+                                false
+                        )
+                );
+            } else {
+                Toast.makeText(this, validationErrorMessage, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, R.string.msg_error_no_internet, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private String getName() {

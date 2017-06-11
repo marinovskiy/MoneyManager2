@@ -66,4 +66,42 @@ public class OperationModelImpl implements OperationModel {
 
         return Observable.just(unManagedOperation);
     }
+
+    @Override
+    public Observable<Response<OperationResponse>> newOrganizationOperation(int organizationId,
+                                                                            int accountId,
+                                                                            NetworkOperation operation) {
+        return apiClient.getApiService().newOrganizationOperation(
+                preferenceUtil.getApiKey(),
+                organizationId,
+                accountId,
+                new NewUserOperationRequest(operation)
+        );
+    }
+
+    @Override
+    public Observable<Response<OperationResponse>> editOrganizationOperation(int organizationId,
+                                                                             int accountId,
+                                                                             int operationId,
+                                                                             NetworkOperation operation) {
+        return apiClient.getApiService().editOrganizationOperation(
+                preferenceUtil.getApiKey(),
+                organizationId,
+                accountId,
+                operationId,
+                new NewUserOperationRequest(operation)
+        );
+    }
+
+    @Override
+    public Observable<Response<SimpleRespone>> deleteOrganizationOperation(int organizationId,
+                                                                           int accountId,
+                                                                           int operationId) {
+        return apiClient.getApiService().deleteOrganizationOperation(
+                preferenceUtil.getApiKey(),
+                organizationId,
+                accountId,
+                operationId
+        );
+    }
 }

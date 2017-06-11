@@ -52,4 +52,64 @@ public class NewOrganizationPresenterImpl extends AbstractPresenter<NewOrganizat
                         })
         );
     }
+
+    @Override
+    public void loadOrganizationDb(int organizationId) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
+
+        addSubscription(
+                organizationModel.organizationByIdDb(organizationId)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(organization -> {
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().setOrganization(organization);
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        NewOrganizationActivity.ERROR_CASE_LOAD_ORGANIZATION
+                                );
+                            }
+                        })
+        );
+    }
+
+    @Override
+    public void editOrganization(int organizationId, NetworkOrganization organization) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
+
+        addSubscription(
+                organizationModel.editOrganization(organizationId, organization)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (isViewAttached()) {
+                                if (response.isSuccessful()) {
+                                    getView().organizationAddedSuccess();
+                                } else {
+                                    getView().dismissProgressDialog();
+                                    getView().showErrorDialog(
+                                            NewOrganizationActivity.ERROR_CASE_EDIT_ORGANIZATION
+                                    );
+                                }
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        NewOrganizationActivity.ERROR_CASE_EDIT_ORGANIZATION
+                                );
+                            }
+                        })
+        );
+    }
 }

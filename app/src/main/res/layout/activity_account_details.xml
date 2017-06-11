@@ -1,9 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:ignore="MissingPrefix">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_account_details"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:elevation="4dp"
+            app:title="Account details"
+            app:titleTextColor="@color/colorAccent" />
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_padding_medium">
+
+            <TextView
+                android:id="@+id/tv_account_description"
+                fontPath="fonts/Roboto-Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:text="" />
+
+            <TextView
+                android:id="@+id/tv_account_balance"
+                fontPath="fonts/Roboto-Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_padding_medium"
+                android:background="@drawable/tv_balance_bg_positive"
+                android:paddingBottom="@dimen/margin_padding_small"
+                android:paddingEnd="@dimen/margin_padding_medium"
+                android:paddingStart="@dimen/margin_padding_medium"
+                android:paddingTop="@dimen/margin_padding_small"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp"
+                tools:text="Balance: 4503.45 $" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_operations"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingBottom="@dimen/margin_padding_medium"
+                android:paddingTop="@dimen/margin_padding_medium"
+                tools:listitem="@layout/list_item_operation1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_new_operation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:clickable="true"
+        android:src="@drawable/ic_add"
+        app:borderWidth="2dp"
+        app:elevation="4dp"
+        app:fabSize="normal"
+        app:layout_anchorGravity="bottom|end" />
+
+</android.support.design.widget.CoordinatorLayout>

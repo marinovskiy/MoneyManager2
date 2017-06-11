@@ -43,6 +43,7 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
     public static final int ERROR_CASE_LOAD_OPERATION = 2;
     public static final int ERROR_CASE_EDIT_OPERATION = 3;
 
+    public static final String INTENT_KEY_ORGANIZATION_ID = "intent_key_organization_id";
     public static final String INTENT_KEY_ACCOUNT_ID = "intent_key_account_id";
     public static final String INTENT_KEY_OPERATION_ID = "intent_key_operation_id";
 
@@ -72,6 +73,7 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
 
     private String validationErrorMessage;
 
+    private int organizationId;
     private int accountId;
     private int operationId;
 
@@ -101,6 +103,7 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
         rbTypeIncome.setChecked(true);
         etSum.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(7, 2)});
 
+        organizationId = getIntent().getIntExtra(INTENT_KEY_ORGANIZATION_ID, 0);
         accountId = getIntent().getIntExtra(INTENT_KEY_ACCOUNT_ID, 0);
         operationId = getIntent().getIntExtra(INTENT_KEY_OPERATION_ID, 0);
 
@@ -121,7 +124,11 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
             View.OnClickListener menuOnClickListener = v -> {
                 switch (v.getId()) {
                     case R.id.action_add:
-                        addNewOperation();
+                        if (organizationId == 0) {
+                            addNewOperation();
+                        } else {
+                            addNewOrganizationOperation();
+                        }
                         break;
                 }
             };
@@ -135,7 +142,11 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
             View.OnClickListener menuOnClickListener = v -> {
                 switch (v.getId()) {
                     case R.id.action_update:
-                        editOperation();
+                        if (organizationId == 0) {
+                            editOperation();
+                        } else {
+                            editOrganizationOperation();
+                        }
                         break;
                 }
             };
@@ -341,6 +352,49 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
         if (systemUtils.isConnected()) {
             if (isValid()) {
                 presenter.editOperation(
+                        accountId,
+                        operationId,
+                        new NetworkOperation(
+                                getType(),
+                                getDescription(),
+                                Float.parseFloat(getSum()),
+                                getCategory()
+                        )
+                );
+            } else {
+                Toast.makeText(this, validationErrorMessage, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, R.string.msg_error_no_internet, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addNewOrganizationOperation() {
+        if (systemUtils.isConnected()) {
+            if (isValid()) {
+                presenter.addNewOrganizationOperation(
+                        organizationId,
+                        accountId,
+                        new NetworkOperation(
+                                getType(),
+                                getDescription(),
+                                Float.parseFloat(getSum()),
+                                getCategory()
+                        )
+                );
+            } else {
+                Toast.makeText(this, validationErrorMessage, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, R.string.msg_error_no_internet, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void editOrganizationOperation() {
+        if (systemUtils.isConnected()) {
+            if (isValid()) {
+                presenter.editOrganizationOperation(
+                        organizationId,
                         accountId,
                         operationId,
                         new NetworkOperation(

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import javax.inject.Inject;
 
 import alex.moneymanager.R;
+import alex.moneymanager.activities.AccountDetailsActivity;
 import alex.moneymanager.activities.MainActivity;
 import alex.moneymanager.activities.NewAccountActivity;
 import alex.moneymanager.activities.OrganizationMembersActivity;
@@ -38,6 +39,7 @@ public class OrganizationsFragment extends BaseFragment implements Organizations
 
     public static final String TAG = "OrganizationsFragment";
 
+    public static final int REQUEST_CODE_DETAILS_ACCOUNT = 3320;
     public static final int REQUEST_CODE_EDIT_ACCOUNT = 3321;
 
     public static final int ERROR_CASE_ORGANIZATION = 0;
@@ -114,6 +116,7 @@ public class OrganizationsFragment extends BaseFragment implements Organizations
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
+                case REQUEST_CODE_DETAILS_ACCOUNT:
                 case REQUEST_CODE_EDIT_ACCOUNT:
                     if (organization != null) {
                         presenter.loadOrganization(organization.getId());
@@ -162,7 +165,6 @@ public class OrganizationsFragment extends BaseFragment implements Organizations
                 if (rvAccountsAdapter == null) {
                     rvAccountsAdapter = new AccountsAdapter(this.organization.getAccounts());
                     rvAccountsAdapter.setOnItemClickListener((view, position) -> {
-                        //TODO details
                         if (this.organization.getCreator().getId().equals(preferenceUtil.getUser().getId())
                                 && this.organization.getAccounts() != null) {
                             showAccountPopupMenu(
@@ -176,7 +178,6 @@ public class OrganizationsFragment extends BaseFragment implements Organizations
                 } else {
                     rvAccountsAdapter.updateAccounts(this.organization.getAccounts());
                 }
-
             }
         }
     }
@@ -231,10 +232,13 @@ public class OrganizationsFragment extends BaseFragment implements Organizations
         lastAccountId = accountId;
 
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
-        popupMenu.inflate(R.menu.popup_menu_edit_delete);
+        popupMenu.inflate(R.menu.popup_menu_account);
 
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.action_details:
+                    detailsAccount(accountId);
+                    return true;
                 case R.id.action_edit:
                     editAccount();
                     return true;
@@ -247,6 +251,13 @@ public class OrganizationsFragment extends BaseFragment implements Organizations
         });
 
         popupMenu.show();
+    }
+
+    private void detailsAccount(int accountId) {
+        Intent intent = new Intent(getActivity(), AccountDetailsActivity.class);
+        intent.putExtra(AccountDetailsActivity.INTENT_KEY_ORGANIZATION_ID, lastOrganizationId);
+        intent.putExtra(AccountDetailsActivity.INTENT_KEY_ACCOUNT_ID, accountId);
+        startActivityForResult(intent, REQUEST_CODE_DETAILS_ACCOUNT);
     }
 
     private void editAccount() {

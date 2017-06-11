@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -47,7 +49,8 @@ public class MainActivity extends BaseActivity implements MainView {
     private static final int REQUEST_CODE_NEW_OPERATION = 12345;
     private static final int REQUEST_CODE_NEW_USER_ACCOUNT = 12346;
     private static final int REQUEST_CODE_NEW_ORGANIZATION = 12347;
-    private static final int REQUEST_CODE_NEW_ORGANIZATION_ACCOUNT = 12348;
+    private static final int REQUEST_CODE_EDIT_ORGANIZATION = 12348;
+    private static final int REQUEST_CODE_NEW_ORGANIZATION_ACCOUNT = 12349;
 
     @BindView(R.id.drawer_layout_main)
     DrawerLayout drawerLayout;
@@ -75,6 +78,8 @@ public class MainActivity extends BaseActivity implements MainView {
     PreferenceUtil preferenceUtil;
     @Inject
     MainPresenter presenter;
+
+    private MenuItem menuItemEdit;
 
     private ProgressDialog progressDialog;
 
@@ -174,6 +179,7 @@ public class MainActivity extends BaseActivity implements MainView {
                     }
                     break;
                 case REQUEST_CODE_NEW_ORGANIZATION_ACCOUNT:
+                case REQUEST_CODE_EDIT_ORGANIZATION:
                     if (selectedOrganization != null) {
                         selectOrganization(selectedOrganization);
                     }
@@ -201,10 +207,27 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        menuItemEdit = menu.findItem(R.id.action_edit);
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.action_edit:
+                Intent intent = new Intent(this, NewOrganizationActivity.class);
+                intent.putExtra(
+                        NewOrganizationActivity.INTENT_KEY_ORGANIZATION_ID,
+                        selectedOrganization.getId()
+                );
+                startActivityForResult(intent, REQUEST_CODE_NEW_ORGANIZATION);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -499,18 +522,21 @@ public class MainActivity extends BaseActivity implements MainView {
     public void updateMenuByFragment(String fragmentTag) {
         switch (fragmentTag) {
             case AccountsFragment.TAG:
+                menuItemEdit.setVisible(false);
 //                tvToolbarTitle.setText("Your accounts");
 //
 //                spinnerPeriod.setVisibility(View.GONE);
 //                tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
             case OrganizationsFragment.TAG:
+                menuItemEdit.setVisible(true);
 //                tvToolbarTitle.setText("Your organizations");
 //
 //                spinnerPeriod.setVisibility(View.GONE);
 //                tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
             case ProfileFragment.TAG:
+                menuItemEdit.setVisible(false);
 //                tvToolbarTitle.setText("Your profile");
 //
 //                spinnerPeriod.setVisibility(View.GONE);

@@ -179,4 +179,72 @@ public class NewOperationPresenterImpl extends AbstractPresenter<NewOperationVie
                         })
         );
     }
+
+    @Override
+    public void addNewOrganizationOperation(int organizationId, int accountId,
+                                            NetworkOperation operation) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
+
+        addSubscription(
+                operationModel.newOrganizationOperation(organizationId, accountId, operation)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (isViewAttached()) {
+                                if (response.isSuccessful()) {
+                                    getView().operationAddedSuccess();
+                                } else {
+                                    getView().dismissProgressDialog();
+                                    getView().showErrorDialog(
+                                            NewOperationActivity.ERROR_CASE_NEW_OPERATION
+                                    );
+                                }
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        NewOperationActivity.ERROR_CASE_NEW_OPERATION
+                                );
+                            }
+                        })
+        );
+    }
+
+    @Override
+    public void editOrganizationOperation(int organizationId, int accountId, int operationId,
+                                          NetworkOperation operation) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
+
+        addSubscription(
+                operationModel.editOrganizationOperation(organizationId, accountId, operationId, operation)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (isViewAttached()) {
+                                if (response.isSuccessful()) {
+                                    getView().operationAddedSuccess();
+                                } else {
+                                    getView().dismissProgressDialog();
+                                    getView().showErrorDialog(
+                                            NewOperationActivity.ERROR_CASE_EDIT_OPERATION
+                                    );
+                                }
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        NewOperationActivity.ERROR_CASE_EDIT_OPERATION
+                                );
+                            }
+                        })
+        );
+    }
 }

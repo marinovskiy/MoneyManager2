@@ -15,7 +15,6 @@ import alex.moneymanager.api.response.OrganizationsResponse;
 import alex.moneymanager.api.response.SimpleRespone;
 import alex.moneymanager.api.response.UnsecuredListsResponse;
 import alex.moneymanager.api.response.UsersResponse;
-import alex.moneymanager.entities.db.Account;
 import alex.moneymanager.entities.db.User;
 import io.reactivex.Observable;
 import retrofit2.Response;
@@ -84,6 +83,38 @@ public interface ApiService {
     @GET("organizations/all")
     Observable<Response<OrganizationsResponse>> userOrganizations(
             @Header("X-AUTH-TOKEN") String apiKey
+    );
+
+    @GET("organizations/{organizationId}/accounts/{accountId}/details")
+    Observable<Response<AccountResponse>> organizationAccount(
+            @Header("X-AUTH-TOKEN") String apiKey,
+            @Path("organizationId") int organizationId,
+            @Path("accountId") int accountId
+    );
+
+    @POST("organizations/{organizationId}/accounts/{accountId}/operations/add")
+    Observable<Response<OperationResponse>> newOrganizationOperation(
+            @Header("X-AUTH-TOKEN") String apiKey,
+            @Path("organizationId") int organizationId,
+            @Path("accountId") int accountId,
+            @Body NewUserOperationRequest request
+    );
+
+    @PUT("organizations/{organizationId}/accounts/{accountId}/operations/{operationId}/edit")
+    Observable<Response<OperationResponse>> editOrganizationOperation(
+            @Header("X-AUTH-TOKEN") String apiKey,
+            @Path("organizationId") int organizationId,
+            @Path("accountId") int accountId,
+            @Path("operationId") int operationId,
+            @Body NewUserOperationRequest request
+    );
+
+    @DELETE("organizations/{organizationId}/accounts/{accountId}/operations/{operationId}/delete")
+    Observable<Response<SimpleRespone>> deleteOrganizationOperation(
+            @Header("X-AUTH-TOKEN") String apiKey,
+            @Path("organizationId") int organizationId,
+            @Path("accountId") int accountId,
+            @Path("operationId") int operationId
     );
 
     /**

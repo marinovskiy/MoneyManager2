@@ -26,6 +26,8 @@ public interface AccountModel extends BaseModel {
 
     Observable<Account> accountDb(int accountId);
 
+    Observable<Response<AccountResponse>> organizationAccountApi(int organizationId, int accountId);
+
     Observable<Response<AccountResponse>> newOrganizationAccountApi(
             int organizationId,
             NetworkAccount account
