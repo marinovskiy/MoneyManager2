@@ -18,8 +18,7 @@ import alex.moneymanager.activities.AuthActivity;
 import alex.moneymanager.activities.MainActivity;
 import alex.moneymanager.application.MoneyManagerApplication;
 import alex.moneymanager.dialogs.ErrorDialogFragment;
-import alex.moneymanager.entities.network.PlainPassword;
-import alex.moneymanager.entities.network.User;
+import alex.moneymanager.entities.db.User;
 import alex.moneymanager.presenters.LoginPresenter;
 import alex.moneymanager.utils.SystemUtils;
 import alex.moneymanager.views.LoginView;
@@ -167,7 +166,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
             if (isValid()) {
                 presenter.loginUser(new User(
                         getEmail(),
-                        new PlainPassword(getPassword(), getPassword())
+                        getPassword()
                 ));
             } else {
                 Toast.makeText(getContext(), validationErrorMessage, Toast.LENGTH_SHORT).show();
@@ -179,12 +178,12 @@ public class LoginFragment extends BaseFragment implements LoginView {
 
     private boolean isValid() {
         if (getEmail().isEmpty()) {
-            validationErrorMessage = "No email";
+            validationErrorMessage = "Будь-ласка, введіть Вашу електронну пошту";
             return false;
         }
 
         if (getPassword().isEmpty()) {
-            validationErrorMessage = "No password";
+            validationErrorMessage = "Будь-ласка, введіть Ваш пароль";
             return false;
         }
 

@@ -8,29 +8,13 @@
     android:padding="@dimen/margin_padding_medium"
     tools:ignore="MissingPrefix">
 
-    <TextView
-        android:id="@+id/tv_account_balance"
-        fontPath="fonts/Roboto-Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/tv_balance_bg_positive"
-        android:paddingBottom="@dimen/margin_padding_small"
-        android:paddingEnd="@dimen/margin_padding_medium"
-        android:paddingStart="@dimen/margin_padding_medium"
-        android:paddingTop="@dimen/margin_padding_small"
-        android:text="Balance: 4503.45 $"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp" />
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_operations"
+        android:id="@+id/rv_news"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        tools:listitem="@layout/list_item_operation1"
         android:overScrollMode="never"
-        android:paddingTop="@dimen/margin_padding_medium"
-        android:paddingBottom="@dimen/margin_padding_medium" />
+        android:paddingBottom="@dimen/margin_padding_medium"
+        tools:listitem="@layout/list_item_news" />
 
 </LinearLayout>

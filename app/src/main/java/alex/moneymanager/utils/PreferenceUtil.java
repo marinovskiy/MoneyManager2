@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
-import alex.moneymanager.entities.network.User;
+import alex.moneymanager.entities.db.User;
 
 public class PreferenceUtil {
 

@@ -2,7 +2,6 @@ package alex.moneymanager.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,11 +17,13 @@ import javax.inject.Inject;
 
 import alex.moneymanager.R;
 import alex.moneymanager.activities.MainActivity;
+import alex.moneymanager.adapters.NewsAdapter;
 import alex.moneymanager.adapters.OperationsAdapter;
 import alex.moneymanager.application.MoneyManagerApplication;
+import alex.moneymanager.entities.db.Category;
+import alex.moneymanager.entities.db.News;
+import alex.moneymanager.entities.db.Operation;
 import alex.moneymanager.entities.enums.Type;
-import alex.moneymanager.entities.network.Category;
-import alex.moneymanager.entities.network.Operation;
 import alex.moneymanager.utils.PreferenceUtil;
 import alex.moneymanager.utils.SystemUtils;
 import butterknife.BindView;
@@ -31,10 +32,8 @@ public class HomeFragment extends BaseFragment {
 
     public static final String TAG = "HomeFragment";
 
-    @BindView(R.id.tv_account_balance)
-    TextView tvAccountBalance;
-    @BindView(R.id.rv_operations)
-    RecyclerView rvOperations;
+    @BindView(R.id.rv_news)
+    RecyclerView rvNews;
 
     @Inject
     SystemUtils systemUtils;
@@ -42,7 +41,7 @@ public class HomeFragment extends BaseFragment {
     PreferenceUtil preferenceUtil;
 
     private LinearLayoutManager linearLayoutManager;
-    private OperationsAdapter rvOperationsAdapter;
+    private NewsAdapter rvNewsAdapter;
 
     public HomeFragment() {
     }
@@ -70,20 +69,11 @@ public class HomeFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        float balance = new Random().nextInt(500) - 300;
-
-        if (balance < 0) {
-            tvAccountBalance.setBackgroundResource(R.drawable.tv_balance_bg_negative);
-        } else {
-            tvAccountBalance.setBackgroundResource(R.drawable.tv_balance_bg_positive);
-        }
-        tvAccountBalance.setText(String.format("Поточний баланс: %s %s", balance, "$"));
-
         linearLayoutManager = new LinearLayoutManager(getContext());
-        rvOperationsAdapter = new OperationsAdapter(generateOperations());
+        rvNewsAdapter = new NewsAdapter(generateNews());
 
-        rvOperations.setLayoutManager(linearLayoutManager);
-        rvOperations.setAdapter(rvOperationsAdapter);
+        rvNews.setLayoutManager(linearLayoutManager);
+        rvNews.setAdapter(rvNewsAdapter);
     }
 
 //    @Override
@@ -120,22 +110,21 @@ public class HomeFragment extends BaseFragment {
 //        fragment.show(getChildFragmentManager(), ErrorDialogFragment.TAG);
 //    }
 
-    private List<Operation> generateOperations() {
-        List<Operation> operations = new ArrayList<>();
+    private List<News> generateNews() {
+        List<News> news = new ArrayList<>();
 
         for (int i = 0; i < 15; i++) {
-            operations.add(new Operation(
-                    i + 1,
-                    i % 2 == 0 ? Type.INCOME : Type.EXPENSE,
-                    "slkhfsyfius",
-                    new Random().nextFloat(),
-                    new Category(1, "qwert,y", i % 2 == 0 ? Type.INCOME : Type.EXPENSE),
-                    0,
+            news.add(new News(
+                    i+1,
+                    "hello",
+                    "dksfkdfl kslfkdfl f;ll s;lfs ;fkl;ds",
+                    null,
+                    null,
                     null,
                     null
             ));
         }
 
-        return operations;
+        return news;
     }
 }

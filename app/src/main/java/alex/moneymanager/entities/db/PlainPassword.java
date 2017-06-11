@@ -1,6 +1,8 @@
-package alex.moneymanager.entities.network;
+package alex.moneymanager.entities.db;
 
-public class PlainPassword {
+import io.realm.RealmObject;
+
+public class PlainPassword extends RealmObject {
 
     private String password;
 

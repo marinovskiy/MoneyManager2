@@ -1,6 +1,6 @@
 package alex.moneymanager.models;
 
-import alex.moneymanager.entities.network.User;
+import alex.moneymanager.entities.db.User;
 import io.reactivex.Observable;
 import retrofit2.Response;
 

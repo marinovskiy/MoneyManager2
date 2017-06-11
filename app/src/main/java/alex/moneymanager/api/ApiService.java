@@ -1,8 +1,15 @@
 package alex.moneymanager.api;
 
+import alex.moneymanager.api.request.NewUserAccountRequest;
+import alex.moneymanager.api.request.RegistrationRequest;
+import alex.moneymanager.api.request.UserLoginRequest;
+import alex.moneymanager.api.response.AccountResponse;
+import alex.moneymanager.api.response.AccountsResponse;
 import alex.moneymanager.api.response.CategoriesResponse;
 import alex.moneymanager.api.response.CurrenciesResponse;
-import alex.moneymanager.entities.network.User;
+import alex.moneymanager.api.response.OrganizationsResponse;
+import alex.moneymanager.api.response.UnsecuredListsResponse;
+import alex.moneymanager.entities.db.User;
 import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -20,27 +27,45 @@ public interface ApiService {
     Observable<Response<User>> login(
             @Header("platformType") String platformType,
             @Header("udid") String udid,
-            @Body User user
+            @Body UserLoginRequest request
     );
 
-    @POST("registration")
+    @POST("auth/registration")
     Observable<Response<User>> registration(
             @Header("platformType") String platformType,
             @Header("udid") String udid,
-            @Body User user
+            @Body RegistrationRequest request
     );
 
     /**
-     * Categories requests
+     * Unsecured lists requests
      */
+    @GET("unsecuredLists")
+    Observable<Response<UnsecuredListsResponse>> unsecuredLists();
 
     @GET("categories")
     Observable<Response<CategoriesResponse>> categories();
 
-    /**
-     * Currencies requests
-     */
-
     @GET("currencies")
     Observable<Response<CurrenciesResponse>> currencies();
+
+    /**
+     * Accounts requests
+     */
+    @GET("accounts")
+    Observable<Response<AccountsResponse>> userAccounts(@Header("X-AUTH-TOKEN") String apiKey);
+
+    @POST("accounts/new")
+    Observable<Response<AccountResponse>> newUserAccount(
+            @Header("X-AUTH-TOKEN") String apiKey,
+            @Body NewUserAccountRequest request
+    );
+
+    /**
+     * Organizations requests
+     */
+    @GET("organizations/all")
+    Observable<Response<OrganizationsResponse>> userOrganizations(
+            @Header("X-AUTH-TOKEN") String apiKey
+    );
 }

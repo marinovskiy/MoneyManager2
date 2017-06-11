@@ -1,7 +1,9 @@
 package alex.moneymanager.models;
 
 import alex.moneymanager.api.ApiClient;
-import alex.moneymanager.entities.network.User;
+import alex.moneymanager.api.request.RegistrationRequest;
+import alex.moneymanager.api.request.UserLoginRequest;
+import alex.moneymanager.entities.db.User;
 import alex.moneymanager.utils.PreferenceUtil;
 import io.reactivex.Observable;
 import retrofit2.Response;
@@ -21,7 +23,7 @@ public class AuthModelImpl implements AuthModel {
         return apiClient.getApiService().login(
                 ApiClient.PLATFORM,
                 preferenceUtil.getUdid(),
-                user
+                new UserLoginRequest(user)
         );
     }
 
@@ -30,7 +32,7 @@ public class AuthModelImpl implements AuthModel {
         return apiClient.getApiService().registration(
                 ApiClient.PLATFORM,
                 preferenceUtil.getUdid(),
-                user
+                new RegistrationRequest(user)
         );
     }
 }

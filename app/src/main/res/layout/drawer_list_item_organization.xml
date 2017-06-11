@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackgroundBorderless"
-    android:clickable="true"
-    android:focusable="true"
-    android:padding="@dimen/margin_padding_medium"
+    android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
     <TextView
-        android:id="@+id/action_add_operation"
+        android:id="@+id/tv_organization_name"
         fontPath="fonts/Roboto-Regular.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add"
-        android:textColor="@color/colorAccent"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxEms="10"
+        android:padding="@dimen/margin_padding_medium"
+        android:text="My company budget"
+        android:textColor="@color/textColorPrimary"
         android:textSize="16sp" />
 
 </LinearLayout>

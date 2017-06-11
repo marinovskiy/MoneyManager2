@@ -1,52 +1,85 @@
 package alex.moneymanager.activities;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Spinner;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import alex.moneymanager.R;
 import alex.moneymanager.adapters.AccountsDrawerAdapter;
+import alex.moneymanager.adapters.OrganizationsDrawerAdapter;
 import alex.moneymanager.adapters.SpinnerAccountsAdapter;
-import alex.moneymanager.entities.network.Account;
-import alex.moneymanager.entities.network.Currency;
+import alex.moneymanager.application.MoneyManagerApplication;
+import alex.moneymanager.dialogs.ErrorDialogFragment;
+import alex.moneymanager.entities.db.Account;
+import alex.moneymanager.entities.db.Organization;
 import alex.moneymanager.fragments.AccountsFragment;
 import alex.moneymanager.fragments.HomeFragment;
 import alex.moneymanager.fragments.OrganizationsFragment;
 import alex.moneymanager.fragments.ProfileFragment;
+import alex.moneymanager.presenters.MainPresenter;
+import alex.moneymanager.utils.PreferenceUtil;
+import alex.moneymanager.utils.SystemUtils;
+import alex.moneymanager.views.MainView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MainView {
+
+    public static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int REQUEST_CODE_NEW_OPERATION = 12345;
+    private static final int REQUEST_CODE_NEW_ACCOUNT = 12346;
 
     @BindView(R.id.drawer_layout_main)
     DrawerLayout drawerLayout;
     @BindView(R.id.toolbar_main)
     Toolbar toolbar;
-//    @BindView(R.id.spinner_accounts)
+    //    @BindView(R.id.spinner_accounts)
 //    Spinner spinnerPeriod;
     @BindView(R.id.tv_toolbar_title_main)
     TextView tvToolbarTitle;
-    @BindView(R.id.rv_accounts)
-    RecyclerView rvAccountsDrawer;
+
+    @BindView(R.id.tv_header_nav_menu_right)
+    TextView tvHeaderNavMenuRight;
+    @BindView(R.id.tv_empty_view_nav_menu_right)
+    TextView tvEmptyViewNavMenuRight;
+    @BindView(R.id.btn_add_nav_menu_right)
+    Button btnAddNavMenuRight;
+    @BindView(R.id.rv_drawer)
+    RecyclerView rvDrawer;
+    @BindView(R.id.fab_new_operation)
+    FloatingActionButton fabNewOperation;
+
+    @Inject
+    SystemUtils systemUtils;
+    @Inject
+    PreferenceUtil preferenceUtil;
+    @Inject
+    MainPresenter presenter;
+
+    private ProgressDialog progressDialog;
 
     private SpinnerAccountsAdapter<String> spinnerAccountsAdapter;
     private AccountsDrawerAdapter rvAccountsDrawerAdapter;
+    private OrganizationsDrawerAdapter rvOrganizationsDrawerAdapter;
 
     private String lastFragmentTag;
     private HomeFragment homeFragment;
@@ -55,12 +88,19 @@ public class MainActivity extends BaseActivity {
     private ProfileFragment profileFragment;
 
     private List<String> accountsTest = Arrays.asList("By day", "By month", "By year");
+
     private List<Account> accounts;
+    private List<Organization> organizations;
+
+    private Account selectedAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ((MoneyManagerApplication) getApplication()).component().inject(this);
+        presenter.attachView(this);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -69,6 +109,14 @@ public class MainActivity extends BaseActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+//        drawerLayout.setDrawerLockMode(
+//                DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+//                findViewById(R.id.nav_menu_right)
+//        );
+        fabNewOperation.setVisibility(View.GONE);
+
+        rvDrawer.setLayoutManager(new LinearLayoutManager(this));
 
         spinnerAccountsAdapter = new SpinnerAccountsAdapter<>(
                 this,
@@ -93,6 +141,7 @@ public class MainActivity extends BaseActivity {
 
         homeFragment = HomeFragment.newInstance();
         accountsFragment = AccountsFragment.newInstance();
+        accountsFragment = AccountsFragment.newInstance();
         organizationsFragment = OrganizationsFragment.newInstance();
         profileFragment = ProfileFragment.newInstance();
 
@@ -104,13 +153,29 @@ public class MainActivity extends BaseActivity {
             lastFragmentTag = HomeFragment.TAG;
         }
 
-        accounts = generateAccounts();
-        rvAccountsDrawerAdapter = new AccountsDrawerAdapter(accounts);
-        rvAccountsDrawer.setLayoutManager(new LinearLayoutManager(this));
-        rvAccountsDrawer.setAdapter(rvAccountsDrawerAdapter);
-        rvAccountsDrawerAdapter.setOnItemClickListener(position -> {
-            Toast.makeText(this, "selected acc = " + accounts.get(position), Toast.LENGTH_SHORT).show();
-        });
+        loadMainData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_NEW_OPERATION:
+                    if (selectedAccount != null) {
+                        selectAccount(selectedAccount);
+                    }
+                    break;
+                case REQUEST_CODE_NEW_ACCOUNT:
+                    loadMainData();
+                    break;
+            }
+        }
     }
 
     @Override
@@ -134,7 +199,8 @@ public class MainActivity extends BaseActivity {
     }
 
     @OnClick({R.id.ll_action_nav_home, R.id.ll_action_nav_accounts, R.id.ll_action_nav_organizations,
-            R.id.ll_action_nav_profile, R.id.ll_action_nav_settings, R.id.ll_action_nav_logout})
+            R.id.ll_action_nav_profile, R.id.ll_action_nav_settings, R.id.ll_action_nav_logout,
+            R.id.btn_add_nav_menu_right})
     public void onDrawerViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_action_nav_home:
@@ -152,6 +218,12 @@ public class MainActivity extends BaseActivity {
                     }
 
                     lastFragmentTag = HomeFragment.TAG;
+
+//                    drawerLayout.setDrawerLockMode(
+//                            DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+//                            findViewById(R.id.nav_menu_right)
+//                    );
+                    fabNewOperation.setVisibility(View.GONE);
                 }
                 break;
             case R.id.ll_action_nav_accounts:
@@ -169,6 +241,25 @@ public class MainActivity extends BaseActivity {
                     }
 
                     lastFragmentTag = AccountsFragment.TAG;
+
+                    tvHeaderNavMenuRight.setText("Оберіть аккаунт:");
+                    tvEmptyViewNavMenuRight.setText("У Вас ще не має аккаунтів");
+                    btnAddNavMenuRight.setText("Додати аккаунт");
+                    if (rvAccountsDrawerAdapter != null) {
+                        tvEmptyViewNavMenuRight.setVisibility(View.GONE);
+                        rvDrawer.setVisibility(View.VISIBLE);
+
+                        rvDrawer.setAdapter(rvAccountsDrawerAdapter);
+
+                        drawerLayout.setDrawerLockMode(
+                                DrawerLayout.LOCK_MODE_UNLOCKED,
+                                findViewById(R.id.nav_menu_right)
+                        );
+                    } else {
+                        rvDrawer.setVisibility(View.GONE);
+                        tvEmptyViewNavMenuRight.setVisibility(View.VISIBLE);
+                    }
+                    fabNewOperation.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.ll_action_nav_organizations:
@@ -186,6 +277,25 @@ public class MainActivity extends BaseActivity {
                     }
 
                     lastFragmentTag = OrganizationsFragment.TAG;
+
+                    tvHeaderNavMenuRight.setText("Оберіть групу:");
+                    tvEmptyViewNavMenuRight.setText("У Вас ще не має груп");
+                    btnAddNavMenuRight.setText("Додати групу");
+                    if (rvOrganizationsDrawerAdapter != null) {
+                        tvEmptyViewNavMenuRight.setVisibility(View.GONE);
+                        rvDrawer.setVisibility(View.VISIBLE);
+
+                        rvDrawer.setAdapter(rvOrganizationsDrawerAdapter);
+
+                        drawerLayout.setDrawerLockMode(
+                                DrawerLayout.LOCK_MODE_UNLOCKED,
+                                findViewById(R.id.nav_menu_right)
+                        );
+                    } else {
+                        rvDrawer.setVisibility(View.GONE);
+                        tvEmptyViewNavMenuRight.setVisibility(View.VISIBLE);
+                    }
+                    fabNewOperation.setVisibility(View.GONE);
                 }
                 break;
             case R.id.ll_action_nav_profile:
@@ -203,13 +313,32 @@ public class MainActivity extends BaseActivity {
                     }
 
                     lastFragmentTag = ProfileFragment.TAG;
+
+//                    drawerLayout.setDrawerLockMode(
+//                            DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+//                            findViewById(R.id.nav_menu_right)
+//                    );
+                    fabNewOperation.setVisibility(View.GONE);
                 }
                 break;
             case R.id.ll_action_nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.ll_action_nav_logout:
-                Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
+                logout();
+                break;
+            case R.id.btn_add_nav_menu_right:
+                switch (lastFragmentTag) {
+                    case AccountsFragment.TAG:
+                        startActivityForResult(
+                                new Intent(this, NewAccountActivity.class),
+                                REQUEST_CODE_NEW_ACCOUNT
+                        );
+                        break;
+                    case OrganizationsFragment.TAG:
+
+                        break;
+                }
                 break;
         }
 
@@ -226,12 +355,109 @@ public class MainActivity extends BaseActivity {
         );
     }
 
+    @Override
+    public void setData(List<Account> accounts, List<Organization> organizations) {
+        Log.d(TAG, "setData: " + accounts);
+        Log.d(TAG, "setData: " + organizations);
+
+
+        if (accounts != null) {
+            this.accounts = accounts;
+
+            if (rvAccountsDrawerAdapter == null) {
+                rvAccountsDrawerAdapter = new AccountsDrawerAdapter(accounts);
+                rvAccountsDrawerAdapter.setOnItemClickListener(position -> {
+                    if (!accounts.isEmpty()) {
+                        selectAccount(accounts.get(position));
+                    }
+                });
+            } else {
+                rvAccountsDrawerAdapter.updateAccounts(accounts);
+            }
+
+            if (!accounts.isEmpty()) {
+                selectAccount(accounts.get(0));
+            }
+        }
+        if (organizations != null) {
+            this.organizations = organizations;
+
+            if (rvOrganizationsDrawerAdapter == null) {
+                rvOrganizationsDrawerAdapter = new OrganizationsDrawerAdapter(organizations);
+                rvOrganizationsDrawerAdapter.setOnItemClickListener(position -> {
+                    Toast.makeText(this, "selected acc = " + organizations.get(position), Toast.LENGTH_SHORT).show();
+                });
+            } else {
+                rvOrganizationsDrawerAdapter.updateOrganizations(organizations);
+            }
+        }
+    }
+
+    @Override
+    public void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Loading...");
+            progressDialog.setCancelable(false);
+        }
+        progressDialog.show();
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void showErrorDialog() {
+        ErrorDialogFragment fragment = ErrorDialogFragment.newInstance(
+                getString(R.string.msg_error_while_making_request),
+                getString(R.string.dialog_btn_ok),
+                getString(R.string.dialog_btn_retry),
+                new ErrorDialogFragment.OnClickListener() {
+                    @Override
+                    public void onPositiveButtonClick() {
+                    }
+
+                    @Override
+                    public void onNegativeButtonClick() {
+                        loadMainData();
+                    }
+                }
+        );
+
+        fragment.show(getSupportFragmentManager(), ErrorDialogFragment.TAG);
+    }
+
+    private void loadMainData() {
+        if (systemUtils.isConnected()) {
+            presenter.loadMainDataApi();
+        } else {
+            presenter.loadMainDataDb();
+        }
+    }
+
+    private void selectAccount(Account account) {
+        if (lastFragmentTag.equals(AccountsFragment.TAG) && accountsFragment != null) {
+            selectedAccount = account;
+
+            accountsFragment.switchAccount(account.getId());
+
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    private void logout() {
+        preferenceUtil.setUser(null);
+        preferenceUtil.setApiKey(null);
+
+        Intent intent = new Intent(this, AuthActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
     public void updateMenuByFragment(String fragmentTag) {
         switch (fragmentTag) {
-            case HomeFragment.TAG:
-//                tvToolbarTitle.setVisibility(View.GONE);
-//                spinnerPeriod.setVisibility(View.VISIBLE);
-                break;
             case AccountsFragment.TAG:
 //                tvToolbarTitle.setText("Your accounts");
 //
@@ -251,15 +477,5 @@ public class MainActivity extends BaseActivity {
 //                tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
         }
-    }
-
-    private List<Account> generateAccounts() {
-        List<Account> accounts = new ArrayList<>();
-
-        for (int i = 0; i < 15; i++) {
-            accounts.add(new Account(++i, "test" + i, "sfsafsaf", new Currency(i, "Dollar USD", "$"), 45.454f, null, null, null));
-        }
-
-        return accounts;
     }
 }

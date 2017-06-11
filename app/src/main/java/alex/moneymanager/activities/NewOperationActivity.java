@@ -57,11 +57,11 @@ public class NewOperationActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_new_operation, menu);
+        getMenuInflater().inflate(R.menu.menu_add, menu);
 
         View.OnClickListener menuOnClickListener = v -> {
             switch (v.getId()) {
-                case R.id.action_add_operation:
+                case R.id.action_add:
                     if (systemUtils.isConnected()) {
                         if (isValid()) {
                             Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show();
@@ -77,7 +77,7 @@ public class NewOperationActivity extends BaseActivity {
             }
         };
 
-        menu.findItem(R.id.action_add_operation)
+        menu.findItem(R.id.action_add)
                 .getActionView()
                 .setOnClickListener(menuOnClickListener);
 

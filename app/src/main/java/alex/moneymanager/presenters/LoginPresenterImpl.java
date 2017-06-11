@@ -1,6 +1,6 @@
 package alex.moneymanager.presenters;
 
-import alex.moneymanager.entities.network.User;
+import alex.moneymanager.entities.db.User;
 import alex.moneymanager.models.AuthModel;
 import alex.moneymanager.utils.PreferenceUtil;
 import alex.moneymanager.views.LoginView;

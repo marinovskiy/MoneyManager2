@@ -33,6 +33,9 @@
             android:name=".activities.NewOperationActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activities.NewAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.SettingsActivity"
             android:screenOrientation="portrait" />
     </application>

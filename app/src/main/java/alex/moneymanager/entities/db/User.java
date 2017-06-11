@@ -1,11 +1,13 @@
-package alex.moneymanager.entities.network;
-
-import java.util.List;
+package alex.moneymanager.entities.db;
 
 import alex.moneymanager.entities.enums.Gender;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class User {
+public class User extends RealmObject {
 
+    @PrimaryKey
     private Integer id;
 
     private String email;
@@ -25,24 +27,35 @@ public class User {
     @Gender
     private String gender;
 
-    private List<Account> accounts;
+    private RealmList<Account> accounts;
 
-    private List<Organization> createdOrganizations;
+    private RealmList<Organization> createdOrganizations;
 
-    private List<Organization> organizations;
+    private RealmList<Organization> organizations;
 
     public User() {
     }
 
-    public User(String email, PlainPassword plainPassword) {
+    // login constructor
+    public User(String email, String password) {
         this.email = email;
+        this.password = password;
+    }
+
+    // registration constructor
+    public User(String email, String firstName, String lastName, PlainPassword plainPassword,
+                String gender) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.plainPassword = plainPassword;
+        this.gender = gender;
     }
 
     public User(Integer id, String email, String firstName, String lastName, String password,
                 PlainPassword plainPassword, String apiKey, Boolean enabled, String gender,
-                List<Account> accounts, List<Organization> createdOrganizations,
-                List<Organization> organizations) {
+                RealmList<Account> accounts, RealmList<Organization> createdOrganizations,
+                RealmList<Organization> organizations) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -129,27 +142,27 @@ public class User {
         this.gender = gender;
     }
 
-    public List<Account> getAccounts() {
+    public RealmList<Account> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(List<Account> accounts) {
+    public void setAccounts(RealmList<Account> accounts) {
         this.accounts = accounts;
     }
 
-    public List<Organization> getCreatedOrganizations() {
+    public RealmList<Organization> getCreatedOrganizations() {
         return createdOrganizations;
     }
 
-    public void setCreatedOrganizations(List<Organization> createdOrganizations) {
+    public void setCreatedOrganizations(RealmList<Organization> createdOrganizations) {
         this.createdOrganizations = createdOrganizations;
     }
 
-    public List<Organization> getOrganizations() {
+    public RealmList<Organization> getOrganizations() {
         return organizations;
     }
 
-    public void setOrganizations(List<Organization> organizations) {
+    public void setOrganizations(RealmList<Organization> organizations) {
         this.organizations = organizations;
     }
 

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:id="@+id/nav_menu_right"
+    android:layout_width="250dp"
     android:layout_height="match_parent"
     android:layout_gravity="end"
     android:background="@color/bgMain"
@@ -9,9 +10,10 @@
     tools:ignore="MissingPrefix">
 
     <TextView
+        android:id="@+id/tv_header_nav_menu_right"
         style="@style/NavDrawerHeaderTextViewStyle"
         fontPath="fonts/RussoOne-Regular.ttf"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_marginTop="0dp"
         android:background="@color/colorPrimary"
@@ -21,20 +23,46 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@drawable/toolbar_shadow" />
 
+        <TextView
+            android:id="@+id/tv_empty_view_nav_menu_right"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:lines="1"
+            android:text="У вас ще немає аккаунтів"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="16sp" />
+
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_accounts"
+            android:id="@+id/rv_drawer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
+            android:visibility="gone"
             tools:listitem="@layout/drawer_list_item_account" />
+        <!--tools:listitem="@layout/drawer_list_item_account" />-->
 
     </FrameLayout>
+
+    <Button
+        android:id="@+id/btn_add_nav_menu_right"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/margin_padding_medium"
+        android:layout_marginTop="@dimen/margin_padding_medium"
+        android:paddingEnd="@dimen/margin_padding_medium"
+        android:paddingStart="@dimen/margin_padding_medium"
+        android:text="Додати аккаунт" />
 
 </LinearLayout>

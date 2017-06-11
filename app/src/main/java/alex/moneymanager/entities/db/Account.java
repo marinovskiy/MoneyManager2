@@ -1,9 +1,14 @@
-package alex.moneymanager.entities.network;
+package alex.moneymanager.entities.db;
 
 import java.util.List;
 
-public class Account {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class Account extends RealmObject {
+
+    @PrimaryKey
     private int id;
 
     private String name;
@@ -16,15 +21,26 @@ public class Account {
 
     private Integer user;
 
-    private List<Operation> operations;
+    private RealmList<Operation> operations;
 
     private Integer organization;
+
+    private String createdAt;
+
+    private String updatedAt;
 
     public Account() {
     }
 
+    public Account(String name, String description, Currency currency) {
+        this.name = name;
+        this.description = description;
+        this.currency = currency;
+    }
+
     public Account(int id, String name, String description, Currency currency, float balance,
-                   Integer user, List<Operation> operations, Integer organization) {
+                   Integer user, RealmList<Operation> operations, Integer organization,
+                   String createdAt, String updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -33,6 +49,8 @@ public class Account {
         this.user = user;
         this.operations = operations;
         this.organization = organization;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public int getId() {
@@ -83,11 +101,11 @@ public class Account {
         this.user = user;
     }
 
-    public List<Operation> getOperations() {
+    public RealmList<Operation> getOperations() {
         return operations;
     }
 
-    public void setOperations(List<Operation> operations) {
+    public void setOperations(RealmList<Operation> operations) {
         this.operations = operations;
     }
 
@@ -97,6 +115,22 @@ public class Account {
 
     public void setOrganization(Integer organization) {
         this.organization = organization;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -125,6 +159,8 @@ public class Account {
                 ", user=" + user +
                 ", operations=" + operations +
                 ", organization=" + organization +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
                 '}';
     }
 }

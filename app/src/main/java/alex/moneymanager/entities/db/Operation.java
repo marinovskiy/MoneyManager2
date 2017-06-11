@@ -1,9 +1,12 @@
-package alex.moneymanager.entities.network;
+package alex.moneymanager.entities.db;
 
 import alex.moneymanager.entities.enums.Type;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class Operation {
+public class Operation extends RealmObject {
 
+    @PrimaryKey
     private int id;
 
     @Type

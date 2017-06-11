@@ -2,7 +2,7 @@ package alex.moneymanager.api.response;
 
 import java.util.List;
 
-import alex.moneymanager.entities.network.Currency;
+import alex.moneymanager.entities.db.Currency;
 
 public class CurrenciesResponse {
 

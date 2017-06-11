@@ -1,11 +1,13 @@
-package alex.moneymanager.entities.network;
-
-import java.util.List;
+package alex.moneymanager.entities.db;
 
 import alex.moneymanager.entities.enums.Type;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class Organization {
+public class Organization extends RealmObject {
 
+    @PrimaryKey
     private int id;
 
     private String name;
@@ -17,17 +19,24 @@ public class Organization {
 
     private boolean publicAccess;
 
-    private int creator;
+    private User creator;
 
-    private List<User> members;
+    private RealmList<User> members;
 
-    private List<Account> accounts;
+    private RealmList<Account> accounts;
+
+    private boolean enabled;
+
+    private String createdAt;
+
+    private String updatedAt;
 
     public Organization() {
     }
 
     public Organization(int id, String name, String description, String type, boolean publicAccess,
-                        int creator, List<User> members, List<Account> accounts) {
+                        User creator, RealmList<User> members, RealmList<Account> accounts,
+                        boolean enabled, String createdAt, String updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -36,6 +45,9 @@ public class Organization {
         this.creator = creator;
         this.members = members;
         this.accounts = accounts;
+        this.enabled = enabled;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public int getId() {
@@ -78,28 +90,44 @@ public class Organization {
         this.publicAccess = publicAccess;
     }
 
-    public int getCreator() {
+    public User getCreator() {
         return creator;
     }
 
-    public void setCreator(int creator) {
+    public void setCreator(User creator) {
         this.creator = creator;
     }
 
-    public List<User> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<User> members) {
-        this.members = members;
-    }
-
-    public List<Account> getAccounts() {
+    public RealmList<Account> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(List<Account> accounts) {
+    public void setAccounts(RealmList<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -128,6 +156,9 @@ public class Organization {
                 ", creator=" + creator +
                 ", members=" + members +
                 ", accounts=" + accounts +
+                ", enabled=" + enabled +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
                 '}';
     }
 }

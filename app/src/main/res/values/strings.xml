@@ -18,5 +18,10 @@
     <!--navigation drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="msg_error_while_making_request">Помилка під час виконання запиту</string>
+    <string name="msg_error_no_internet">Відсутнє підключення до інтернету</string>
+    <string name="progress_bar_registration">Реєстрація...</string>
+    <string name="dialog_btn_ok">Oк</string>
+    <string name="dialog_btn_retry">Повторити спробу</string>
 
 </resources>

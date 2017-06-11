@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,12 @@ import alex.moneymanager.activities.AuthActivity;
 import alex.moneymanager.activities.MainActivity;
 import alex.moneymanager.application.MoneyManagerApplication;
 import alex.moneymanager.dialogs.ErrorDialogFragment;
+import alex.moneymanager.entities.enums.Gender;
+import alex.moneymanager.entities.db.PlainPassword;
+import alex.moneymanager.entities.db.User;
+import alex.moneymanager.presenters.RegistrationPresenter;
 import alex.moneymanager.utils.PreferenceUtil;
 import alex.moneymanager.utils.SystemUtils;
-import alex.moneymanager.views.ForgotPasswordView;
 import alex.moneymanager.views.RegistrationView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,12 +33,12 @@ public class RegistrationFragment extends BaseFragment implements RegistrationVi
 
     public static final String TAG = "RegistrationFragment";
 
-    @BindView(R.id.et_email)
-    EditText etEmail;
     @BindView(R.id.et_first_name)
     EditText etFirstName;
     @BindView(R.id.et_last_name)
     EditText etLastName;
+    @BindView(R.id.et_email)
+    EditText etEmail;
     @BindView(R.id.et_password)
     EditText etPassword;
     @BindView(R.id.et_password_confirm)
@@ -46,6 +50,8 @@ public class RegistrationFragment extends BaseFragment implements RegistrationVi
     SystemUtils systemUtils;
     @Inject
     PreferenceUtil preferenceUtil;
+    @Inject
+    RegistrationPresenter presenter;
 
     private ProgressDialog progressDialog;
 
@@ -71,16 +77,18 @@ public class RegistrationFragment extends BaseFragment implements RegistrationVi
         ((AuthActivity) getActivity()).updateMenuByFragment(TAG);
 
         ((MoneyManagerApplication) getActivity().getApplication()).component().inject(this);
+        presenter.attachView(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        presenter.detachView();
     }
 
     @OnClick(R.id.btn_register)
     public void onViewClicked() {
-
+        register();
     }
 
     @Override
@@ -93,14 +101,14 @@ public class RegistrationFragment extends BaseFragment implements RegistrationVi
 
     @Override
     public void registrationFailed() {
-        Toast.makeText(getContext(), "Registration failed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Помилка", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(getContext());
-            progressDialog.setMessage("Loading...");
+            progressDialog.setMessage(getString(R.string.progress_bar_registration));
             progressDialog.setCancelable(false);
         }
         progressDialog.show();
@@ -115,15 +123,15 @@ public class RegistrationFragment extends BaseFragment implements RegistrationVi
     public void showErrorDialog() {
         String errorMessage;
         if (systemUtils.isConnected()) {
-            errorMessage = "Error while loading data";
+            errorMessage = getString(R.string.msg_error_while_making_request);
         } else {
-            errorMessage = "No internet connection";
+            errorMessage = getString(R.string.msg_error_no_internet);
         }
 
         ErrorDialogFragment fragment = ErrorDialogFragment.newInstance(
                 errorMessage,
-                "Ok",
-                "Try again",
+                getString(R.string.dialog_btn_ok),
+                getString(R.string.dialog_btn_retry),
                 new ErrorDialogFragment.OnClickListener() {
                     @Override
                     public void onPositiveButtonClick() {
@@ -142,25 +150,94 @@ public class RegistrationFragment extends BaseFragment implements RegistrationVi
     private void register() {
         if (systemUtils.isConnected()) {
             if (isValid()) {
-//                presenter
+                presenter.registerUser(
+                        new User(
+                                getEmail(),
+                                getFirstName(),
+                                getLastName(),
+                                new PlainPassword(getPassword(), getConfirmPassword()),
+                                getGender()
+                        )
+                );
             } else {
                 Toast.makeText(getContext(), validationErrorMessage, Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.msg_error_no_internet, Toast.LENGTH_SHORT).show();
         }
     }
 
     private boolean isValid() {
+        if (getFirstName().isEmpty()) {
+            validationErrorMessage = "Будь-ласка, введіть Ваше ім'я";
+            return false;
+        }
+
+        if (getLastName().isEmpty()) {
+            validationErrorMessage = "Будь-ласка, введіть Ваше прізвище";
+            return false;
+        }
+
         if (getEmail().isEmpty()) {
-            validationErrorMessage = "No email";
+            validationErrorMessage = "Будь-ласка, введіть Вашу електронну пошту";
+            return false;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(getEmail()).matches()) {
+            validationErrorMessage = "Введена Вами електронна пошта не дійсна";
+            return false;
+        }
+
+        if (getPassword().isEmpty()) {
+            validationErrorMessage = "Будь-ласка, введіть пароль";
+            return false;
+        }
+
+        if (getPassword().length() < 6) {
+            validationErrorMessage = "Введений Вами пароль закороткой (мінумум 6 символів)";
+            return false;
+        }
+
+        if (getPassword().contains(" ")) {
+            validationErrorMessage = "Пароль не може містит пробілів";
+            return false;
+        }
+
+        if (getConfirmPassword().isEmpty()) {
+            validationErrorMessage = "Будь-ласка, підтвердіть пароль";
+            return false;
+        }
+
+        if (!getPassword().equals(getConfirmPassword())) {
+            validationErrorMessage = "Паролі не співпадають";
             return false;
         }
 
         return true;
     }
 
+    private String getFirstName() {
+        return etFirstName.getText().toString();
+    }
+
+    private String getLastName() {
+        return etLastName.getText().toString();
+    }
+
     private String getEmail() {
         return etEmail.getText().toString();
+    }
+
+    private String getPassword() {
+        return etPassword.getText().toString();
+    }
+
+    private String getConfirmPassword() {
+        return etPasswordConfirm.getText().toString();
+    }
+
+    private String getGender() {
+        return Gender.MALE;
+//        return etEmail.getText().toString();
     }
 }

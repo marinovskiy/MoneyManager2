@@ -5,7 +5,7 @@ import retrofit2.Retrofit;
 public class ApiClient {
 
 //    public static final String BASE_URL = "http://127.0.0.1:8000/api/";
-    public static final String BASE_URL = "http://127.0.0.1:8000/api/";
+    public static final String BASE_URL = "http://46.101.249.185/api/";
 
     public static final String HEADER_X_API_KEY = "X-AUTH-TOKEN";
 

@@ -44,19 +44,10 @@
         android:paddingStart="@dimen/margin_padding_medium">
 
         <EditText
-            android:id="@+id/et_email"
-            style="@style/EditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Електронна пошта"
-            android:inputType="textEmailAddress" />
-
-        <EditText
             android:id="@+id/et_first_name"
             style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_medium"
             android:hint="Ім'я"
             android:inputType="textPersonName" />
 
@@ -68,6 +59,15 @@
             android:layout_marginTop="@dimen/margin_padding_medium"
             android:hint="Прізвище"
             android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/et_email"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_medium"
+            android:hint="Електронна пошта"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/et_password"

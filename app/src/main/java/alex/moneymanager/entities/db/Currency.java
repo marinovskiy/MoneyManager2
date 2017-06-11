@@ -1,23 +1,24 @@
-package alex.moneymanager.entities.network;
+package alex.moneymanager.entities.db;
 
-import alex.moneymanager.entities.enums.Type;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class Category {
+public class Currency extends RealmObject {
 
+    @PrimaryKey
     private int id;
 
     private String name;
 
-    @Type
-    private String type;
+    private String symbol;
 
-    public Category() {
+    public Currency() {
     }
 
-    public Category(int id, String name, String type) {
+    public Currency(int id, String name, String symbol) {
         this.id = id;
         this.name = name;
-        this.type = type;
+        this.symbol = symbol;
     }
 
     public int getId() {
@@ -36,12 +37,12 @@ public class Category {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public String getSymbol() {
+        return symbol;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
     @Override
@@ -49,9 +50,9 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Category category = (Category) o;
+        Currency currency = (Currency) o;
 
-        return id == category.id;
+        return id == currency.id;
     }
 
     @Override
@@ -61,10 +62,10 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
+        return "Currency{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
+                ", symbol='" + symbol + '\'' +
                 '}';
     }
 }

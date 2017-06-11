@@ -9,8 +9,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import alex.moneymanager.R;
-import alex.moneymanager.entities.network.Account;
-import alex.moneymanager.entities.network.Operation;
+import alex.moneymanager.entities.db.Account;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -26,6 +25,7 @@ public class AccountsDrawerAdapter extends RecyclerView.Adapter<AccountsDrawerAd
 
     public void updateAccounts(List<Account> accounts) {
         this.accounts = accounts;
+        notifyDataSetChanged();
     }
 
     @Override
