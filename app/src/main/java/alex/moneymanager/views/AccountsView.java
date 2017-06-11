@@ -13,6 +13,6 @@ public interface AccountsView extends BaseView {
 
     void dismissProgressDialog();
 
-    void showErrorDialog();
+    void showErrorDialog(int errorCase);
 
 }

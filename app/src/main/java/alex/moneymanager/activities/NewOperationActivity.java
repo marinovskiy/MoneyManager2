@@ -27,6 +27,7 @@ import alex.moneymanager.R;
 import alex.moneymanager.application.MoneyManagerApplication;
 import alex.moneymanager.dialogs.ErrorDialogFragment;
 import alex.moneymanager.entities.db.Category;
+import alex.moneymanager.entities.db.Operation;
 import alex.moneymanager.entities.enums.Type;
 import alex.moneymanager.entities.network.NetworkOperation;
 import alex.moneymanager.presenters.NewOperationPresenter;
@@ -39,8 +40,11 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
 
     public static final int ERROR_CASE_CATEGORIES = 0;
     public static final int ERROR_CASE_NEW_OPERATION = 1;
+    public static final int ERROR_CASE_LOAD_OPERATION = 2;
+    public static final int ERROR_CASE_EDIT_OPERATION = 3;
 
     public static final String INTENT_KEY_ACCOUNT_ID = "intent_key_account_id";
+    public static final String INTENT_KEY_OPERATION_ID = "intent_key_operation_id";
 
     @BindView(R.id.toolbar_new_operation)
     Toolbar toolbar;
@@ -69,6 +73,7 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
     private String validationErrorMessage;
 
     private int accountId;
+    private int operationId;
 
     private ArrayAdapter<String> spinnerAdapterIncome;
     private ArrayAdapter<String> spinnerAdapterExpense;
@@ -97,6 +102,7 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
         etSum.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(7, 2)});
 
         accountId = getIntent().getIntExtra(INTENT_KEY_ACCOUNT_ID, 0);
+        operationId = getIntent().getIntExtra(INTENT_KEY_OPERATION_ID, 0);
 
         presenter.loadCategories();
     }
@@ -109,19 +115,35 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add, menu);
+        if (operationId == 0) {
+            getMenuInflater().inflate(R.menu.menu_add, menu);
 
-        View.OnClickListener menuOnClickListener = v -> {
-            switch (v.getId()) {
-                case R.id.action_add:
-                    addNewOperation();
-                    break;
-            }
-        };
+            View.OnClickListener menuOnClickListener = v -> {
+                switch (v.getId()) {
+                    case R.id.action_add:
+                        addNewOperation();
+                        break;
+                }
+            };
 
-        menu.findItem(R.id.action_add)
-                .getActionView()
-                .setOnClickListener(menuOnClickListener);
+            menu.findItem(R.id.action_add)
+                    .getActionView()
+                    .setOnClickListener(menuOnClickListener);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_update, menu);
+
+            View.OnClickListener menuOnClickListener = v -> {
+                switch (v.getId()) {
+                    case R.id.action_update:
+                        editOperation();
+                        break;
+                }
+            };
+
+            menu.findItem(R.id.action_update)
+                    .getActionView()
+                    .setOnClickListener(menuOnClickListener);
+        }
 
         return true;
     }
@@ -187,6 +209,10 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
                         break;
                 }
             });
+
+            if (operationId != 0) {
+                presenter.loadOperationDb(operationId);
+            }
         }
     }
 
@@ -194,6 +220,43 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
     public void operationAddedSuccess() {
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void setOperation(Operation operation) {
+        int index = -1;
+
+        switch (operation.getType()) {
+            case Type.INCOME:
+                rbTypeIncome.setChecked(true);
+
+                index = categoriesIncome.indexOf(
+                        Stream.of(categoriesIncome)
+                                .filter(value -> value.getId() == operation.getCategory().getId())
+                                .findFirst()
+                                .get()
+                );
+                break;
+            case Type.EXPENSE:
+                rbTypeExpense.setChecked(true);
+
+                index = categoriesExpense.indexOf(
+                        Stream.of(categoriesExpense)
+                                .filter(value -> value.getId() == operation.getCategory().getId())
+                                .findFirst()
+                                .get()
+                );
+                break;
+        }
+
+        if (index != -1) {
+            spinnerCategory.setSelection(index);
+        }
+
+        etSum.setText(String.valueOf(operation.getSum()));
+        if (operation.getDescription() != null) {
+            etDescription.setText(operation.getDescription());
+        }
     }
 
     @Override
@@ -231,6 +294,12 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
                             case ERROR_CASE_NEW_OPERATION:
                                 addNewOperation();
                                 break;
+                            case ERROR_CASE_LOAD_OPERATION:
+                                presenter.loadOperationDb(operationId);
+                                break;
+                            case ERROR_CASE_EDIT_OPERATION:
+                                editOperation();
+                                break;
                         }
                     }
                 }
@@ -253,6 +322,27 @@ public class NewOperationActivity extends BaseActivity implements NewOperationVi
             if (isValid()) {
                 presenter.addNewOperation(
                         accountId,
+                        new NetworkOperation(
+                                getType(),
+                                getDescription(),
+                                Float.parseFloat(getSum()),
+                                getCategory()
+                        )
+                );
+            } else {
+                Toast.makeText(this, validationErrorMessage, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, R.string.msg_error_no_internet, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void editOperation() {
+        if (systemUtils.isConnected()) {
+            if (isValid()) {
+                presenter.editOperation(
+                        accountId,
+                        operationId,
                         new NetworkOperation(
                                 getType(),
                                 getDescription(),

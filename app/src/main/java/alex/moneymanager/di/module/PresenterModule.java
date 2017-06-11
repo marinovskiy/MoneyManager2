@@ -74,7 +74,8 @@ public class PresenterModule {
     }
 
     @Provides
-    AccountsPresenter provideAccountsPresenter(SystemUtils systemUtils, AccountModel accountModel) {
-        return new AccountsPresenterImpl(systemUtils, accountModel);
+    AccountsPresenter provideAccountsPresenter(SystemUtils systemUtils, AccountModel accountModel,
+                                               OperationModel operationModel) {
+        return new AccountsPresenterImpl(systemUtils, accountModel, operationModel);
     }
 }

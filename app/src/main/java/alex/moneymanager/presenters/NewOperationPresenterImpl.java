@@ -119,4 +119,64 @@ public class NewOperationPresenterImpl extends AbstractPresenter<NewOperationVie
                         })
         );
     }
+
+    @Override
+    public void loadOperationDb(int operationId) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
+
+        addSubscription(
+                operationModel.operationByIdDb(operationId)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(operation -> {
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().setOperation(operation);
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        NewOperationActivity.ERROR_CASE_LOAD_OPERATION
+                                );
+                            }
+                        })
+        );
+    }
+
+    @Override
+    public void editOperation(int accountId, int operationId, NetworkOperation operation) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
+
+        addSubscription(
+                operationModel.editOperation(accountId, operationId, operation)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (isViewAttached()) {
+                                if (response.isSuccessful()) {
+                                    getView().operationAddedSuccess();
+                                } else {
+                                    getView().dismissProgressDialog();
+                                    getView().showErrorDialog(
+                                            NewOperationActivity.ERROR_CASE_EDIT_OPERATION
+                                    );
+                                }
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        NewOperationActivity.ERROR_CASE_EDIT_OPERATION
+                                );
+                            }
+                        })
+        );
+    }
 }

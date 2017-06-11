@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,11 @@ import javax.inject.Inject;
 
 import alex.moneymanager.R;
 import alex.moneymanager.activities.MainActivity;
+import alex.moneymanager.activities.NewOperationActivity;
 import alex.moneymanager.adapters.OperationsAdapter;
 import alex.moneymanager.application.MoneyManagerApplication;
 import alex.moneymanager.dialogs.ErrorDialogFragment;
+import alex.moneymanager.dialogs.MyDialogFragment;
 import alex.moneymanager.entities.db.Account;
 import alex.moneymanager.presenters.AccountsPresenter;
 import alex.moneymanager.utils.PreferenceUtil;
@@ -28,6 +31,10 @@ import alex.moneymanager.views.AccountsView;
 import butterknife.BindView;
 
 public class AccountsFragment extends BaseFragment implements AccountsView {
+
+    public static final int ERROR_CASE_ACCOUNT = 0;
+    public static final int ERROR_CASE_EDIT_OPERATION = 1;
+    public static final int ERROR_CASE_DELETE_OPERATION = 2;
 
     public static final String TAG = "AccountsFragment";
 
@@ -52,6 +59,7 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
 
     private int lastAccountId;
     private Account account;
+    private Integer lastOperationId;
 
     public AccountsFragment() {
     }
@@ -119,22 +127,27 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
             tvAccountBalance.setText(
                     String.format(
                             "Поточний баланс: %s %s",
-                            account.getBalance(),
-                            account.getCurrency().getSymbol()
+                            this.account.getBalance(),
+                            this.account.getCurrency().getSymbol()
                     )
             );
 
-            if (account.getOperations() != null) {
+            if (this.account.getOperations() != null) {
 
                 if (rvOperationsAdapter == null) {
                     rvOperationsAdapter = new OperationsAdapter(account.getOperations());
-                    rvOperationsAdapter.setOnItemClickListener(position -> {
-                        Toast.makeText(getContext(), "TODO popup for edit delete operation", Toast.LENGTH_SHORT).show();
+                    rvOperationsAdapter.setOnItemClickListener((view, position) -> {
+                        if (this.account.getOperations() != null) {
+                            showAccountPopupMenu(
+                                    view,
+                                    this.account.getOperations().get(position).getId()
+                            );
+                        }
                     });
 
                     rvOperations.setAdapter(rvOperationsAdapter);
                 } else {
-                    rvOperationsAdapter.updateOperations(account.getOperations());
+                    rvOperationsAdapter.updateOperations(this.account.getOperations());
                 }
 
             }
@@ -157,7 +170,7 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
     }
 
     @Override
-    public void showErrorDialog() {
+    public void showErrorDialog(int errorCase) {
         ErrorDialogFragment fragment = ErrorDialogFragment.newInstance(
                 getString(R.string.msg_error_while_making_request),
                 getString(R.string.dialog_btn_ok),
@@ -169,12 +182,75 @@ public class AccountsFragment extends BaseFragment implements AccountsView {
 
                     @Override
                     public void onNegativeButtonClick() {
-                        presenter.loadAccount(lastAccountId);
+                        switch (errorCase) {
+                            case ERROR_CASE_ACCOUNT:
+                                presenter.loadAccount(lastAccountId);
+                                break;
+                            case ERROR_CASE_EDIT_OPERATION:
+                                editOperation();
+                                break;
+                            case ERROR_CASE_DELETE_OPERATION:
+                                deleteOperation();
+                                break;
+                        }
                     }
                 }
         );
 
         fragment.show(getChildFragmentManager(), ErrorDialogFragment.TAG);
+    }
+
+    private void showAccountPopupMenu(View view, int operationId) {
+        lastOperationId = operationId;
+
+        PopupMenu popupMenu = new PopupMenu(getContext(), view);
+        popupMenu.inflate(R.menu.popup_menu_operation);
+
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_edit:
+                    editOperation();
+                    return true;
+                case R.id.action_delete:
+                    deleteOperation();
+                    return true;
+                default:
+                    return false;
+            }
+        });
+
+        popupMenu.show();
+    }
+
+    private void editOperation() {
+        Intent intent = new Intent(getActivity(), NewOperationActivity.class);
+        intent.putExtra(NewOperationActivity.INTENT_KEY_ACCOUNT_ID, lastAccountId);
+        intent.putExtra(NewOperationActivity.INTENT_KEY_OPERATION_ID, lastOperationId);
+        startActivityForResult(intent, REQUEST_CODE_NEW_OPERATION);
+    }
+
+    private void deleteOperation() {
+        MyDialogFragment fragment = MyDialogFragment.newInstance(
+                "Ви впевнені, що хочете видалити дану операцію?",
+                "Так",
+                "Ні",
+                new MyDialogFragment.OnClickListener() {
+                    @Override
+                    public void onPositiveButtonClick() {
+                        if (systemUtils.isConnected()) {
+                            if (lastOperationId != null) {
+                                presenter.deleteOperation(lastAccountId, lastOperationId);
+                            }
+                        } else {
+                            Toast.makeText(getContext(), R.string.msg_error_no_internet, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onNegativeButtonClick() {
+                    }
+                });
+        fragment.show(getChildFragmentManager(), MyDialogFragment.TAG);
     }
 
     public void switchAccount(int accountId) {

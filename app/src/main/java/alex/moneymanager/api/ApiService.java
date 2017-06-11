@@ -10,14 +10,17 @@ import alex.moneymanager.api.response.CategoriesResponse;
 import alex.moneymanager.api.response.CurrenciesResponse;
 import alex.moneymanager.api.response.OperationResponse;
 import alex.moneymanager.api.response.OrganizationsResponse;
+import alex.moneymanager.api.response.SimpleRespone;
 import alex.moneymanager.api.response.UnsecuredListsResponse;
 import alex.moneymanager.entities.db.User;
 import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -86,5 +89,20 @@ public interface ApiService {
             @Header("X-AUTH-TOKEN") String apiKey,
             @Path("accountId") int accountId,
             @Body NewUserOperationRequest request
+    );
+
+    @PUT("accounts/{accountId}/operations/{operationId}/edit")
+    Observable<Response<OperationResponse>> editUserOperation(
+            @Header("X-AUTH-TOKEN") String apiKey,
+            @Path("accountId") int accountId,
+            @Path("operationId") int operationId,
+            @Body NewUserOperationRequest request
+    );
+
+    @DELETE("accounts/{accountId}/operations/{operationId}/delete")
+    Observable<Response<SimpleRespone>> deleteUserOperation(
+            @Header("X-AUTH-TOKEN") String apiKey,
+            @Path("accountId") int accountId,
+            @Path("operationId") int operationId
     );
 }

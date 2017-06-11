@@ -12,4 +12,9 @@ public class DbFields {
      * Accounts
      */
     public static final String ACCOUNT_ID = "id";
+
+    /**
+     * Operations
+     */
+    public static final String OPERATION_ID = "id";
 }

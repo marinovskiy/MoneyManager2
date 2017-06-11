@@ -1,7 +1,10 @@
 package alex.moneymanager.presenters;
 
 import alex.moneymanager.entities.db.Account;
+import alex.moneymanager.entities.network.NetworkOperation;
+import alex.moneymanager.fragments.AccountsFragment;
 import alex.moneymanager.models.AccountModel;
+import alex.moneymanager.models.OperationModel;
 import alex.moneymanager.utils.SystemUtils;
 import alex.moneymanager.views.AccountsView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -12,10 +15,13 @@ public class AccountsPresenterImpl extends AbstractPresenter<AccountsView>
 
     private SystemUtils systemUtils;
     private AccountModel accountModel;
+    private OperationModel operationModel;
 
-    public AccountsPresenterImpl(SystemUtils systemUtils, AccountModel accountModel) {
+    public AccountsPresenterImpl(SystemUtils systemUtils, AccountModel accountModel,
+                                 OperationModel operationModel) {
         this.systemUtils = systemUtils;
         this.accountModel = accountModel;
+        this.operationModel = operationModel;
     }
 
     @Override
@@ -41,14 +47,18 @@ public class AccountsPresenterImpl extends AbstractPresenter<AccountsView>
                                 } else {
                                     if (isViewAttached()) {
                                         getView().dismissProgressDialog();
-                                        getView().showErrorDialog();
+                                        getView().showErrorDialog(
+                                                AccountsFragment.ERROR_CASE_ACCOUNT
+                                        );
                                     }
                                 }
                             }, throwable -> {
                                 throwable.printStackTrace();
                                 if (isViewAttached()) {
                                     getView().dismissProgressDialog();
-                                    getView().showErrorDialog();
+                                    getView().showErrorDialog(
+                                            AccountsFragment.ERROR_CASE_ACCOUNT
+                                    );
                                 }
                             })
             );
@@ -66,10 +76,80 @@ public class AccountsPresenterImpl extends AbstractPresenter<AccountsView>
                                 throwable.printStackTrace();
                                 if (isViewAttached()) {
                                     getView().dismissProgressDialog();
-                                    getView().showErrorDialog();
+                                    getView().showErrorDialog(
+                                            AccountsFragment.ERROR_CASE_ACCOUNT
+                                    );
                                 }
                             })
             );
         }
+    }
+
+    @Override
+    public void editOperation(int accountId, int operationId, NetworkOperation operation) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
+
+        addSubscription(
+                operationModel.editOperation(accountId, operationId, operation)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+
+                                if (response.isSuccessful()) {
+                                    loadAccount(accountId);
+                                }
+                            } else {
+                                getView().showErrorDialog(
+                                        AccountsFragment.ERROR_CASE_EDIT_OPERATION
+                                );
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        AccountsFragment.ERROR_CASE_EDIT_OPERATION
+                                );
+                            }
+                        })
+        );
+    }
+
+    @Override
+    public void deleteOperation(int accountId, int operationId) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+        }
+
+        addSubscription(
+                operationModel.deleteOperation(accountId, operationId)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+
+                                if (response.isSuccessful()) {
+                                    loadAccount(accountId);
+                                }
+                            } else {
+                                getView().showErrorDialog(
+                                        AccountsFragment.ERROR_CASE_EDIT_OPERATION
+                                );
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            if (isViewAttached()) {
+                                getView().dismissProgressDialog();
+                                getView().showErrorDialog(
+                                        AccountsFragment.ERROR_CASE_EDIT_OPERATION
+                                );
+                            }
+                        })
+        );
     }
 }

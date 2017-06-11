@@ -11,6 +11,8 @@ import java.util.List;
 
 import alex.moneymanager.R;
 import alex.moneymanager.entities.db.Operation;
+import alex.moneymanager.entities.enums.Type;
+import alex.moneymanager.utils.DateTimeUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -67,33 +69,33 @@ public class OperationsAdapter extends RecyclerView.Adapter<OperationsAdapter.Op
         @Override
         public void onClick(View v) {
             if (onItemClickListener != null) {
-                onItemClickListener.onItemClick(getAdapterPosition());
+                onItemClickListener.onItemClick(v, getAdapterPosition());
             }
         }
 
         void bindOperation(Operation operation) {
             String number;
-
             if (getAdapterPosition() + 1 < 10) {
                 number = String.format(" %s", getAdapterPosition() + 1);
             } else {
                 number = String.valueOf(getAdapterPosition() + 1);
             }
             tvOperationNumber.setText(number);
+            
             tvOperationDescription.setText(operation.getDescription());
             tvOperationCategory.setText(operation.getCategory().getName());
 
-            if (operation.getSum() < 0) {
-                tvOperationSum.setTextColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.colorNegative)
-                );
-            } else {
+            if (operation.getType().equals(Type.INCOME)) {
                 tvOperationSum.setTextColor(
                         ContextCompat.getColor(itemView.getContext(), R.color.colorPositive)
                 );
+            } else if (operation.getType().equals(Type.EXPENSE)) {
+                tvOperationSum.setTextColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.colorNegative)
+                );
             }
             tvOperationSum.setText(String.valueOf(operation.getSum()));
-//            tvOperationDate.setText();
+            tvOperationDate.setText(DateTimeUtils.covertDateStr(operation.getCreatedAt()));
         }
     }
 
@@ -103,6 +105,6 @@ public class OperationsAdapter extends RecyclerView.Adapter<OperationsAdapter.Op
 
     public interface OnItemClickListener {
 
-        void onItemClick(int position);
+        void onItemClick(View view, int position);
     }
 }
