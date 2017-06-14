@@ -9,6 +9,7 @@ import alex.moneymanager.activities.MainActivity;
 import alex.moneymanager.activities.NewAccountActivity;
 import alex.moneymanager.activities.NewOperationActivity;
 import alex.moneymanager.activities.NewOrganizationActivity;
+import alex.moneymanager.activities.NewsDetailsActivity;
 import alex.moneymanager.activities.OrganizationMembersActivity;
 import alex.moneymanager.activities.SplashActivity;
 import alex.moneymanager.application.MoneyManagerApplication;
@@ -63,6 +64,8 @@ public interface AppComponent {
     void inject(OrganizationMembersActivity activity);
 
     void inject(AddMembersActivity activity);
+
+    void inject(NewsDetailsActivity activity);
 
     // fragments
     void inject(WelcomeFragment fragment);

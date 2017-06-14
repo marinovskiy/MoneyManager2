@@ -22,4 +22,9 @@ public class DbFields {
      * Organizations
      */
     public static final String ORGANIZATION_ID = "id";
+
+    /**
+     * News
+     */
+    public static final String NEWS_ID = "id";
 }

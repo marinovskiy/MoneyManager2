@@ -17,15 +17,15 @@ public class News extends RealmObject {
 
     private String updatedAt;
 
-    private User author;
+    private Integer author;
 
     private RealmList<Comment> comments;
 
     public News() {
     }
 
-    public News(int id, String title, String text, String createdAt, String updatedAt, User author,
-                RealmList<Comment> comments) {
+    public News(int id, String title, String text, String createdAt, String updatedAt,
+                Integer author, RealmList<Comment> comments) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -75,11 +75,11 @@ public class News extends RealmObject {
         this.updatedAt = updatedAt;
     }
 
-    public User getAuthor() {
+    public Integer getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(Integer author) {
         this.author = author;
     }
 

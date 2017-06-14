@@ -1,5 +1,6 @@
 package alex.moneymanager.api;
 
+import alex.moneymanager.api.request.AddCommentRequest;
 import alex.moneymanager.api.request.NewOrganizationRequest;
 import alex.moneymanager.api.request.NewUserAccountRequest;
 import alex.moneymanager.api.request.NewUserOperationRequest;
@@ -9,6 +10,8 @@ import alex.moneymanager.api.response.AccountResponse;
 import alex.moneymanager.api.response.AccountsResponse;
 import alex.moneymanager.api.response.CategoriesResponse;
 import alex.moneymanager.api.response.CurrenciesResponse;
+import alex.moneymanager.api.response.NewsListResponse;
+import alex.moneymanager.api.response.NewsResponse;
 import alex.moneymanager.api.response.OperationResponse;
 import alex.moneymanager.api.response.OrganizationResponse;
 import alex.moneymanager.api.response.OrganizationsResponse;
@@ -225,5 +228,24 @@ public interface ApiService {
     Observable<Response<UsersResponse>> usersSearch(
             @Header("X-AUTH-TOKEN") String apiKey,
             @Query("email") String email
+    );
+
+    /**
+     * News and comments requests
+     */
+    @GET("news/list")
+    Observable<Response<NewsListResponse>> newsList(@Header("X-AUTH-TOKEN") String apiKey);
+
+    @GET("news/{id}/details")
+    Observable<Response<NewsResponse>> newsDetails(
+            @Header("X-AUTH-TOKEN") String apiKey,
+            @Path("id") int id
+    );
+
+    @POST("news/{id}/comments/new")
+    Observable<Response<SimpleRespone>> addComment(
+            @Header("X-AUTH-TOKEN") String apiKey,
+            @Path("id") int id,
+            @Body AddCommentRequest request
     );
 }

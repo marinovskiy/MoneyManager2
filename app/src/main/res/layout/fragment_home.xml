@@ -5,16 +5,25 @@
     android:layout_height="match_parent"
     android:background="@color/bgMain"
     android:orientation="vertical"
-    android:padding="@dimen/margin_padding_medium"
+    android:paddingEnd="@dimen/margin_padding_medium"
+    android:paddingStart="@dimen/margin_padding_medium"
     tools:ignore="MissingPrefix">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_news"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_to_refresh_news_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingBottom="@dimen/margin_padding_medium"
-        tools:listitem="@layout/list_item_news" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_news"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingBottom="@dimen/margin_padding_medium"
+            android:paddingTop="@dimen/margin_padding_medium"
+            tools:listitem="@layout/list_item_news" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

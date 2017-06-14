@@ -6,7 +6,7 @@ import io.realm.annotations.PrimaryKey;
 public class Comment extends RealmObject {
 
     @PrimaryKey
-    private int id;
+    private Integer id;
 
     private String text;
 
@@ -17,18 +17,22 @@ public class Comment extends RealmObject {
     public Comment() {
     }
 
-    public Comment(int id, String text, String createdAt, User author) {
+    public Comment(String text) {
+        this.text = text;
+    }
+
+    public Comment(Integer id, String text, String createdAt, User author) {
         this.id = id;
         this.text = text;
         this.createdAt = createdAt;
         this.author = author;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -63,12 +67,12 @@ public class Comment extends RealmObject {
 
         Comment comment = (Comment) o;
 
-        return id == comment.id;
+        return id.equals(comment.id);
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return id.hashCode();
     }
 
     @Override

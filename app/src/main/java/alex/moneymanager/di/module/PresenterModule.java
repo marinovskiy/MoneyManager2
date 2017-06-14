@@ -5,6 +5,7 @@ import alex.moneymanager.models.AuthModel;
 import alex.moneymanager.models.CategoryModel;
 import alex.moneymanager.models.CurrencyModel;
 import alex.moneymanager.models.InitialDataModel;
+import alex.moneymanager.models.NewsModel;
 import alex.moneymanager.models.OperationModel;
 import alex.moneymanager.models.OrganizationModel;
 import alex.moneymanager.models.UserModel;
@@ -12,6 +13,8 @@ import alex.moneymanager.presenters.AccountDetailsPresenter;
 import alex.moneymanager.presenters.AccountDetailsPresenterImpl;
 import alex.moneymanager.presenters.AccountsPresenter;
 import alex.moneymanager.presenters.AccountsPresenterImpl;
+import alex.moneymanager.presenters.HomePresenter;
+import alex.moneymanager.presenters.HomePresenterImpl;
 import alex.moneymanager.presenters.LoginPresenter;
 import alex.moneymanager.presenters.LoginPresenterImpl;
 import alex.moneymanager.presenters.MainPresenter;
@@ -22,6 +25,8 @@ import alex.moneymanager.presenters.NewOperationPresenter;
 import alex.moneymanager.presenters.NewOperationPresenterImpl;
 import alex.moneymanager.presenters.NewOrganizationPresenter;
 import alex.moneymanager.presenters.NewOrganizationPresenterImpl;
+import alex.moneymanager.presenters.NewsDetailsPresenter;
+import alex.moneymanager.presenters.NewsDetailsPresenterImpl;
 import alex.moneymanager.presenters.OrganizationAddMemberPresenter;
 import alex.moneymanager.presenters.OrganizationAddMemberPresenterImpl;
 import alex.moneymanager.presenters.OrganizationMembersPresenter;
@@ -118,5 +123,15 @@ public class PresenterModule {
                                                            AccountModel accountModel,
                                                            OperationModel operationModel) {
         return new AccountDetailsPresenterImpl(systemUtils, accountModel, operationModel);
+    }
+
+    @Provides
+    HomePresenter provideHomePresenter(NewsModel newsModel, SystemUtils systemUtils) {
+        return new HomePresenterImpl(newsModel, systemUtils);
+    }
+
+    @Provides
+    NewsDetailsPresenter provideNewsDetailsPresenter(NewsModel newsModel, SystemUtils systemUtils) {
+        return new NewsDetailsPresenterImpl(newsModel, systemUtils);
     }
 }

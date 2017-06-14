@@ -12,6 +12,8 @@ import alex.moneymanager.models.CurrencyModel;
 import alex.moneymanager.models.CurrencyModelImpl;
 import alex.moneymanager.models.InitialDataModel;
 import alex.moneymanager.models.InitialDataModelImpl;
+import alex.moneymanager.models.NewsModel;
+import alex.moneymanager.models.NewsModelImpl;
 import alex.moneymanager.models.OperationModel;
 import alex.moneymanager.models.OperationModelImpl;
 import alex.moneymanager.models.OrganizationModel;
@@ -66,5 +68,11 @@ public class ModelModule {
     @Provides
     UserModel provideUserModel(ApiClient apiClient, PreferenceUtil preferenceUtil) {
         return new UserModelImpl(apiClient, preferenceUtil);
+    }
+
+    @Provides
+    NewsModel provideNewsModel(ApiClient apiClient, RealmManager realmManager,
+                               PreferenceUtil preferenceUtil) {
+        return new NewsModelImpl(apiClient, realmManager, preferenceUtil);
     }
 }

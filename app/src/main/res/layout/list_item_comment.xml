@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/margin_padding_small"
+    android:layout_marginStart="@dimen/margin_padding_small"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/margin_padding_small"
+    android:paddingTop="@dimen/margin_padding_small"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_comment_number"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:text="1"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_comment_text"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_tiny"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:text="Pizza"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_small"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_comment_author"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_medium"
+            android:lines="1"
+            android:text="alex m"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_comment_date"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_medium"
+            android:lines="1"
+            android:text="24 dec"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
